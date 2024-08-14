@@ -94,6 +94,7 @@ const ProfilePage = () => {
   };
 
   const getProfileData = async () => {
+    console.log(id);
     service
         .getProfile(id)
         .then((res) => {
@@ -153,7 +154,8 @@ const ProfilePage = () => {
                   {profile.followers ? (
                       <ProfileFeed/>
                   ) : (
-                      <StyledH5>Private account</StyledH5>
+                      /* TODO: revisar por que aca decia Private Account */
+                      <StyledH5>No followers</StyledH5>
                   )}
                 </StyledContainer>
                 <Modal

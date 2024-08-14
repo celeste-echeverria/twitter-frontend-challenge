@@ -12,14 +12,19 @@ interface FeedProps {
 const Feed = ({ posts, loading }: FeedProps) => {
   return (
     <StyledContainer width={"100%"} alignItems={"center"}>
-      {posts
+      {loading && <Loader />}
+      {posts.length > 0 && !loading ? (
+        posts
         .filter((post, index, self) => {
           return self.findIndex((p) => p.id === post.id) === index;
         })
         .map((post: Post) => (
           <Tweet key={post.id} post={post} />
-        ))}
-      {loading && <Loader />}
+        )))
+        : (
+          <p>No posts</p>
+        )
+      }
     </StyledContainer>
   );
 };

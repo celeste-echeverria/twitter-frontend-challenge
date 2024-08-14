@@ -111,17 +111,17 @@ const Tweet = ({post}: TweetProps) => {
           />
           <Reaction
               img={IconType.RETWEET}
-              count={getCountByType("RETWEET")}
-              reactionFunction={() => handleReaction("RETWEET")}
+              count={getCountByType("Retweet")}
+              reactionFunction={() => handleReaction("Retweet")}
               increment={1}
-              reacted={hasReactedByType("RETWEET")}
+              reacted={hasReactedByType("Retweet")}
           />
           <Reaction
               img={IconType.LIKE}
-              count={getCountByType("LIKE")}
-              reactionFunction={() => handleReaction("LIKE")}
+              count={getCountByType("Like")}
+              reactionFunction={() => handleReaction("Like")}
               increment={1}
-              reacted={hasReactedByType("LIKE")}
+              reacted={hasReactedByType("Like")}
           />
         </StyledReactionsContainer>
         <CommentModal

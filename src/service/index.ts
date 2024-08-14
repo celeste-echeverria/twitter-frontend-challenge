@@ -38,6 +38,7 @@ export interface Reaction {
   updatedAt: Date;
   deletedAt?: Date;
 }
+
 export interface Author {
   id: string;
   name?: string;
