@@ -7,7 +7,6 @@ import TweetBox from "../../components/tweet-box/TweetBox";
 import Tweet from "../../components/tweet/Tweet";
 import { StyledFeedContainer } from "../home-page/components/contentContainer/FeedContainer";
 import { HttpService } from "../../service/HttpRequestService";
-import { AxiosError } from "axios";
 
 const PostPage: React.FC = () => {
 
