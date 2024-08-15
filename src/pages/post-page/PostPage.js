@@ -8,6 +8,7 @@ import { StyledH5 } from "../../components/common/text";
 import { StyledFeedContainer } from "../home-page/components/contentContainer/FeedContainer";
 import CommentFeed from "../../components/feed/CommentFeed";
 
+//TODO: Revisar y borrar (traducido a fucntional component)
 class PostPage extends Component {
   constructor(props) {
     super(props);

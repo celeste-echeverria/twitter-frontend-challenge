@@ -21,6 +21,8 @@ const WithNav = () => {
   );
 };
 
+//todo: explore INTERCEPTOR
+
 export const ROUTER = createBrowserRouter([
   {
     path: "/sign-up",

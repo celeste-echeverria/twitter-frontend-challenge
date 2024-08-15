@@ -22,6 +22,8 @@ interface TweetBoxProps {
     borderless?: any
 }
 
+//todo:check 'any' types
+
 const TweetBox: React.FC<TweetBoxProps> = ({parentId, close, mobile}: TweetBoxProps) => {
     const [content, setContent] = useState<string>("");
     const [images, setImages] = useState<File[]>([]);
