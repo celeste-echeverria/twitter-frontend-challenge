@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {StyledTweetContainer} from "./TweetContainer";
 import AuthorData from "./user-post-data/AuthorData";
-import type {Post, User} from "../../service";
+import type {Post, User} from "../../api/types";
 import {StyledReactionsContainer} from "./ReactionsContainer";
 import Reaction from "./reaction/Reaction";
-import {useHttpRequestService} from "../../service/HttpRequestService";
+import {me} from "../../api/services/userService";
+import {createReaction, deleteReaction} from '../../api/services/reactionService'
+import {getPostById} from '../../api/services/postService'
 import {IconType} from "../icon/Icon";
 import {StyledContainer} from "../common/Container";
 import ThreeDots from "../common/ThreeDots";
@@ -21,7 +23,6 @@ const Tweet = ({post}: TweetProps) => {
   const [actualPost, setActualPost] = useState<Post>(post);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
-  const service = useHttpRequestService();
   const navigate = useNavigate();
   const [user, setUser] = useState<User>()
 
@@ -30,7 +31,7 @@ const Tweet = ({post}: TweetProps) => {
   }, []);
 
   const handleGetUser = async () => {
-    return await service.me()
+    return await me()
   }
 
   const getCountByType = (type: string): number => {
@@ -42,11 +43,11 @@ const Tweet = ({post}: TweetProps) => {
         (r) => r.type === type && r.userId === user?.id
     );
     if (reacted) {
-      await service.deleteReaction(reacted.id);
+      await deleteReaction(reacted.id);
     } else {
-      await service.createReaction(actualPost.id, type);
+      await createReaction(actualPost.id, type);
     }
-    const newPost = await service.getPostById(post.id);
+    const newPost = await getPostById(post.id);
     setActualPost(newPost);
   };
 

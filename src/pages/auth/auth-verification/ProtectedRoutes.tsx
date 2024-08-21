@@ -1,14 +1,13 @@
 import React from "react";
 import { Outlet, Navigate } from "react-router-dom";
-import { useHttpRequestService } from "../../../service/HttpRequestService";
+import { verifyAuth } from "../../../api/services/authService";
 
 interface ProtectedRoutesProps {
     redirectPath?: string;
 }
 
 const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({ redirectPath = '/sign-in'}) => {
-    const httpRequestService = useHttpRequestService();
-    const isAuth = httpRequestService.verifyAuth();  
+    const isAuth = verifyAuth();  
 
     if (!isAuth){
         return <Navigate to={redirectPath} replace />

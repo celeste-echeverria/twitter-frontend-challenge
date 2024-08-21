@@ -1,87 +1,58 @@
-import axios from "axios";
-import { url } from '../config'
+import axios, { AxiosError } from "axios";
+import { authAxios } from "../axiosConfig";
 
 export const getRecommendedUsers = async (limit: number, skip: number) => {
-    const res = await axios.get(`${url}/user`, {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-      params: {
-        limit,
-        skip,
-      },
-    });
-    if (res.status === 200) {
-      return res.data;
-    }
+  const res = await authAxios.get(`/user`, {
+    params: {
+      limit,
+      skip,
+    },
+  });
+  return res.data
 }
 
 export const me = async () => {
-    const res = await axios.get(`${url}/user/me`, {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    });
-    if (res.status === 200) {
-      return res.data;
-    }
+  const res = await authAxios.get(`/user/me`);
+  return res.data
 }
 
-export const searchUsers = async (username: string, limit: number, skip: number) => {
-    try {
-      const cancelToken = axios.CancelToken.source();
+//TODO: search abortcontroller and implement in user searches
+export const searchUsers = async (username: string, limit: number, skip: number, signal: AbortSignal) => {
+  try {
 
-      const response = await axios.get(`${url}/user/search`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-        params: {
-          username,
-          limit,
-          skip,
-        },
-        cancelToken: cancelToken.token,
-      });
+    const res = await authAxios.get(`/user/search`, {
+      params: {
+        username,
+        limit,
+        skip,
+      },
+      signal
+    });
 
-      if (response.status === 200) {
-        return response.data;
-      }
-    } catch (error) {
-      if (!axios.isCancel(error)) console.log(error);
-    }
+    return res.data
+
+  } catch (error: any) {
+    if (error.name === 'AbortError') {  
+      console.log('Request was aborted');
+    } else {
+      console.error('Request failed:', error);
+    }  
+  }
 }
 
 export const getProfile = async (id: string) => {
-    const res = await axios.get(`${url}/user/${id}`, {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    });
-    if (res.status === 200) {
-      return res.data;
-    }
+  const res = await authAxios.get(`/user/${id}`);
+  return res.data
 }
 
 export const getProfileView = async (id: string) => {
-    const res = await axios.get(`${url}/user/${id}`, {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    });
-
-    if (res.status === 200) {
-      return res.data;
-    }
+  const res = await authAxios.get(`/user/${id}`);
+  return res.data
 }
 
 export const deleteProfile = async () => {
-    const res = await axios.delete(`${url}/user/me`, {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    });
-
-    if (res.status === 204) {
-      localStorage.removeItem("token");
-    }
+  const res = await authAxios.delete(`/user/me`);
+  if (res.status === 204) {
+    localStorage.removeItem("token");
+  }
 }

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { BackArrowIcon } from "../../components/icon/Icon";
 import Button from "../../components/button/Button";
-import {Post, User} from "../../service";
+import {Post, User} from "../../api/types";
 import AuthorData from "../../components/tweet/user-post-data/AuthorData";
 import ImageContainer from "../../components/tweet/tweet-image/ImageContainer";
 import { useLocation } from "react-router-dom";
-import { useHttpRequestService } from "../../service/HttpRequestService";
+import { me } from "../../api/services/userService";
+import { getPostById, getPosts } from "../../api/services/postService";
 import TweetInput from "../../components/tweet-input/TweetInput";
 import ImageInput from "../../components/common/ImageInput";
 import { setLength, updateFeed } from "../../redux/user";
@@ -22,7 +23,6 @@ const CommentPage = () => {
   const [images, setImages] = useState<File[]>([]);
   const [user, setUser] = useState<User>()
   const postId = useLocation().pathname.split("/")[3];
-  const service = useHttpRequestService();
   const { length, query } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
@@ -32,7 +32,7 @@ const CommentPage = () => {
   }, []);
 
   const handleGetUser = async () => {
-    return await service.me()
+    return await me()
   }
 
   useEffect(() => {
@@ -40,8 +40,7 @@ const CommentPage = () => {
   }, []);
 
   useEffect(() => {
-    service
-      .getPostById(postId)
+    getPostById(postId)
       .then((res) => {
         setPost(res);
       })
@@ -58,7 +57,7 @@ const CommentPage = () => {
     setContent("");
     setImages([]);
     dispatch(setLength(length + 1));
-    const posts = await service.getPosts(query);
+    const posts = await getPosts(query);
     dispatch(updateFeed(posts));
     exit();
   };

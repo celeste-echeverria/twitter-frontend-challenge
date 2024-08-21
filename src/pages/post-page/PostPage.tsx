@@ -6,20 +6,20 @@ import Loader from "../../components/loader/Loader";
 import TweetBox from "../../components/tweet-box/TweetBox";
 import Tweet from "../../components/tweet/Tweet";
 import { StyledFeedContainer } from "../home-page/components/contentContainer/FeedContainer";
-import { HttpService } from "../../service/HttpRequestService";
+import { getPostById } from "../../api/services/postService";
+import { Post } from "../../api/types";
 
 const PostPage: React.FC = () => {
 
     const [postId, setPostId] = useState<string>(window.location.href.split("/")[4])
-    const [post, setPost] = useState<any>(undefined)
-    const service = new HttpService().service;
+    const [post, setPost] = useState<Post | undefined>(undefined)
    
     const fetchPost = async () => {
-        try {
-            setPost(await service.getPostById(postId));
-        } catch (error) {
-            console.log(error);
-        }
+      try {
+          setPost(await getPostById(postId));
+      } catch (error) {
+          console.log(error);
+      }
     };
     
     useEffect(() => {

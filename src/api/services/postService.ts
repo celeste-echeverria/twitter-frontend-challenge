@@ -1,14 +1,9 @@
-import axios from "axios";
-import { url } from "../config";
-import { S3Service } from "../../service/S3Service";
+import { authAxios } from "../axiosConfig";
+import { S3Service } from "./S3Service";
 import { PostData } from "../types";
 
 export const createPost = async (data: PostData) => {
-  const res = await axios.post(`${url}/post`, data, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
-  });
+  const res = await authAxios.post(`/post`, data);
   if (res.status === 201) {
     const { upload } = S3Service;
     for (const imageUrl of res.data.images) {
@@ -20,40 +15,23 @@ export const createPost = async (data: PostData) => {
 }
 
 export const getPaginatedPosts = async (limit: number, after: string, query: string) => {
-  const res = await axios.get(`${url}/post/${query}`, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
+  const res = await authAxios.get(`/post/${query}`, {
     params: {
       limit,
       after,
     },
   });
-  if (res.status === 200) {
-    return res.data;
-  }
+  return res.data
 }
 
 export const getPosts = async (query: string) => {
-  const res = await axios.get(`${url}/post/${query}`, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
-  });
-  if (res.status === 200) {
-    return res.data;
-  }
+  const res = await authAxios.get(`/post/${query}`);
+  return res.data;
 }
 
 export const getPostById = async (id: string) => {
-  const res = await axios.get(`${url}/post/${id}`, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
-  });
-  if (res.status === 200) {
-    return res.data;
-  }
+  const res = await authAxios.get(`/post/${id}`);
+  return res.data
 }
 
 export const getPaginatedPostsFromProfile = async (
@@ -61,39 +39,23 @@ export const getPaginatedPostsFromProfile = async (
   after: string,
   id: string
 ) => {
-  const res = await axios.get(`${url}/post/by_user/${id}`, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
+  const res = await authAxios.get(`/post/by_user/${id}`, {
     params: {
       limit,
       after,
     },
   });
-
-  if (res.status === 200) {
-    return res.data;
-  }
+  return res.data
 }
 
 export const getPostsFromProfile = async (id: string) => {
-  const res = await axios.get(`${url}/post/by_user/${id}`, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
-  });
-
-  if (res.status === 200) {
-    return res.data;
-  }
+  const res = await authAxios.get(`/post/by_user/${id}`);
+  return res.data
 }
 
 export const deletePost =  async (id: string) => {
-  await axios.delete(`${url}/post/${id}`, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
-  });
+  const res = await authAxios.delete(`/post/${id}`);
+  return res.data
 }
 
 export const getPaginatedCommentsByPostId = async (
@@ -101,27 +63,16 @@ export const getPaginatedCommentsByPostId = async (
   limit: number,
   after: string
 ) => {
-  const res = await axios.get(`${url}/post/comment/by_post/${id}`, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
+  const res = await authAxios.get(`/post/comment/by_post/${id}`, {
     params: {
       limit,
       after,
     },
   });
-  if (res.status === 200) {
-    return res.data;
-  }
+  return res.data
 }
 
 export const getCommentsByPostId = async (id: string) => {
-  const res = await axios.get(`${url}/post/comment/by_post/${id}`, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
-  });
-  if (res.status === 200) {
-    return res.data;
-  }
+  const res = await authAxios.get(`/post/comment/by_post/${id}`);
+  return res.data
 }

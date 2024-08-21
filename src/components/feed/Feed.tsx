@@ -1,5 +1,5 @@
 import React from "react";
-import { Post } from "../../service";
+import { Post } from "../../api/types";
 import { StyledContainer } from "../common/Container";
 import Tweet from "../tweet/Tweet";
 import Loader from "../loader/Loader";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Author } from "../../../service";
+import { Author } from "../../../api/types";
 import UserDataBox from "../../user-data-box/UserDataBox";
 import { StyledContainer } from "../../common/Container";
 import { StyledSearchResultModalContainer } from "./SearchResultModalContainer";
@@ -12,12 +12,13 @@ export const SearchResultModal = ({
   show,
   results,
 }: SearchResultModalProps) => {
+  console.log(results)
   return (
     <>
       {show && (
         <StyledContainer style={{ width: "100%" }}>
           <StyledSearchResultModalContainer>
-            {(results.length === 0 && <div>No results</div>) ||
+            {(!results && <div>No results</div>) ||
               results.map((author) => {
                 return (
                   <UserDataBox

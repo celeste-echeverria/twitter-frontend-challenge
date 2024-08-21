@@ -9,8 +9,8 @@ import {ButtonType} from "../../button/StyledButton";
 import {StyledPromptContainer} from "./PromptContainer";
 import {StyledContainer} from "../../common/Container";
 import {StyledP} from "../../common/text";
-import {useHttpRequestService} from "../../../service/HttpRequestService";
-import {User} from "../../../service";
+import {me} from "../../../api/services/userService";
+import {User} from "../../../api/types";
 
 interface LogoutPromptProps {
   show: boolean;
@@ -21,7 +21,6 @@ const LogoutPrompt = ({ show }: LogoutPromptProps) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const service = useHttpRequestService()
   const [user, setUser] = useState<User>()
 
 
@@ -30,7 +29,7 @@ const LogoutPrompt = ({ show }: LogoutPromptProps) => {
   }, []);
 
   const handleGetUser = async () => {
-    return await service.me()
+    return await me()
   }
 
   const handleClick = () => {

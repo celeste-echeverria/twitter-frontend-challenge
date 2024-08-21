@@ -1,7 +1,8 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import Button from "../button/Button";
 import TweetInput from "../tweet-input/TweetInput";
-import {useHttpRequestService} from "../../service/HttpRequestService";
+import {me} from "../../api/services/userService";
+import {getPosts} from "../../api/services/postService";
 import {setLength, updateFeed} from "../../redux/user";
 import ImageContainer from "../tweet/tweet-image/ImageContainer";
 import {BackArrowIcon} from "../icon/Icon";
@@ -12,7 +13,7 @@ import {StyledTweetBoxContainer} from "./TweetBoxContainer";
 import {StyledContainer} from "../common/Container";
 import {StyledButtonContainer} from "./ButtonContainer";
 import {useDispatch, useSelector} from "react-redux";
-import {User} from "../../service";
+import {User} from "../../api/types";
 import { RootState } from "../../redux/store";
 
 interface TweetBoxProps {
@@ -22,15 +23,12 @@ interface TweetBoxProps {
     borderless?: any
 }
 
-//todo:check 'any' types
-
 const TweetBox: React.FC<TweetBoxProps> = ({parentId, close, mobile}: TweetBoxProps) => {
     const [content, setContent] = useState<string>("");
     const [images, setImages] = useState<File[]>([]);
     const [imagesPreview, setImagesPreview] = useState<string[]>([]);
 
     const {length, query} = useSelector((state: RootState) => state.user);
-    const httpService = useHttpRequestService();
     const dispatch = useDispatch();
     const {t} = useTranslation();
     const [user, setUser] = useState<User | null>(null)
@@ -40,7 +38,7 @@ const TweetBox: React.FC<TweetBoxProps> = ({parentId, close, mobile}: TweetBoxPr
     }, []);
 
     const handleGetUser = async () => {
-        return await httpService.me()
+        return await me()
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -53,7 +51,7 @@ const TweetBox: React.FC<TweetBoxProps> = ({parentId, close, mobile}: TweetBoxPr
             setImages([]);
             setImagesPreview([]);
             dispatch(setLength(length + 1));
-            const posts = await httpService.getPosts(query);
+            const posts = await getPosts(query);
             dispatch(updateFeed(posts));
             close && close();
         } catch (e) {

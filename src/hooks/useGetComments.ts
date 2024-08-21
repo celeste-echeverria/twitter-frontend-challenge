@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useHttpRequestService } from "../service/HttpRequestService";
 import { setLength, updateFeed } from "../redux/user";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import {getCommentsByPostId} from '../api/services/postService'
 
 interface UseGetCommentsProps {
   postId: string;
@@ -14,13 +14,11 @@ export const useGetComments = ({ postId }: UseGetCommentsProps) => {
 
   const dispatch = useAppDispatch();
 
-  const service = useHttpRequestService();
-
   useEffect(() => {
     try {
       setLoading(true);
       setError(false);
-      service.getCommentsByPostId(postId).then((res) => {
+      getCommentsByPostId(postId).then((res) => {
         const updatedPosts = Array.from(new Set([...posts, ...res])).filter(
           (post) => post.parentId === postId
         );
