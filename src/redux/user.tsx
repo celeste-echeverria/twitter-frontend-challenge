@@ -1,6 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {LIMIT} from "../util/Constants";
-import {ChatDTO, Post} from "../api/types";
+import {ChatDTO} from "../interfaces/chat.interface";
+import {Post} from "../interfaces/post.interface";
 
 type InitalStateType = {
   feed: Post[];

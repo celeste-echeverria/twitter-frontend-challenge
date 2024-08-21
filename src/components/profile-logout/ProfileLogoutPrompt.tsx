@@ -8,7 +8,7 @@ import icon from "../../assets/icon.jpg";
 import {StyledP} from "../common/text";
 import {StyledContainer} from "../common/Container";
 import {me} from "../../api/services/userService";
-import {User} from "../../api/types";
+import {User} from "../../interfaces/user.interface";
 
 
 interface ProfileLogoutPromptProps {

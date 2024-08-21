@@ -1,5 +1,5 @@
 import React from "react";
-import { Post } from "../../../api/types";
+import { Post } from "../../../interfaces/post.interface";
 import { PostModal } from "../../post-modal/PostModal";
 import AuthorData from "../../tweet/user-post-data/AuthorData";
 import { StyledContainer } from "../../common/Container";

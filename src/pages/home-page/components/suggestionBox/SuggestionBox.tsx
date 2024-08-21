@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import FollowUserBox from "../../../../components/follow-user/FollowUserBox";
 import { getRecommendedUsers } from "../../../../api/services/userService";
 import { useTranslation } from "react-i18next";
-import { User } from "../../../../api/types";
+import { User } from "../../../../interfaces/user.interface";
 import { StyledSuggestionBoxContainer } from "./SuggestionBoxContainer";
 
 const SuggestionBox = () => {

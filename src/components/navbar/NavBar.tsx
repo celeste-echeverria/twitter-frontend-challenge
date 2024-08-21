@@ -17,7 +17,7 @@ import {StyledIconContainer} from "./IconContainer";
 import {StyledNavItemsContainer} from "./navItem/NavItemsContainer";
 import {StyledP} from "../common/text";
 import {me} from "../../api/services/userService";
-import {User} from "../../api/types";
+import {User} from "../../interfaces/user.interface";
 import ProfileLogoutPrompt from "../profile-logout/ProfileLogoutPrompt";
 
 const NavBar = () => {

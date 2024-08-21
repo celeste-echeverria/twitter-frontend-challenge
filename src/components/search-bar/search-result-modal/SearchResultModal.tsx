@@ -1,5 +1,5 @@
 import React from "react";
-import { Author } from "../../../api/types";
+import { Author } from "../../../interfaces/user.interface";
 import UserDataBox from "../../user-data-box/UserDataBox";
 import { StyledContainer } from "../../common/Container";
 import { StyledSearchResultModalContainer } from "./SearchResultModalContainer";

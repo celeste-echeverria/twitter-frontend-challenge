@@ -6,7 +6,7 @@ import UserDataBox from "../user-data-box/UserDataBox";
 import {useTranslation} from "react-i18next";
 import {ButtonType} from "../button/StyledButton";
 import "./FollowUserBox.css";
-import {Author, User} from "../../api/types";
+import {Author, User} from "../../interfaces/user.interface";
 
 interface FollowUserBoxProps {
   profilePicture?: string;

@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useRef, useState } from "react";
 import SearchResultModal from "./search-result-modal/SearchResultModal";
-import { Author } from "../../api/types";
+import { Author } from "../../interfaces/user.interface";
 import { searchUsers } from "../../api/services/userService";
 import { useTranslation } from "react-i18next";
 import { StyledSearchBarContainer } from "./SearchBarContainer";

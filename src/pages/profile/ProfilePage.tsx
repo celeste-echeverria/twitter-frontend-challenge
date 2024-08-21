@@ -3,7 +3,7 @@ import ProfileInfo from "./ProfileInfo";
 import {useNavigate, useParams} from "react-router-dom";
 import Modal from "../../components/modal/Modal";
 import {useTranslation} from "react-i18next";
-import {User} from "../../api/types";
+import {User} from "../../interfaces/user.interface";
 import {ButtonType} from "../../components/button/StyledButton";
 import {me, getProfile, deleteProfile, getProfileView} from "../../api/services/userService";
 import {followUser, unfollowUser} from "../../api/services/followService";

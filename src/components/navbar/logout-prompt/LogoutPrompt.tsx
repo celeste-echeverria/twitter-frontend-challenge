@@ -10,7 +10,7 @@ import {StyledPromptContainer} from "./PromptContainer";
 import {StyledContainer} from "../../common/Container";
 import {StyledP} from "../../common/text";
 import {me} from "../../../api/services/userService";
-import {User} from "../../../api/types";
+import {User} from "../../../interfaces/user.interface";
 
 interface LogoutPromptProps {
   show: boolean;

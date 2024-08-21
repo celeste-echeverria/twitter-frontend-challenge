@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Author } from "../api/types";
+import { Author } from "../interfaces/user.interface";
 import { searchUsers } from "../api/services/userService";
 import { LIMIT } from "../util/Constants";
 

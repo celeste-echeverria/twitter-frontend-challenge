@@ -7,7 +7,7 @@ import { deletePost } from "../../../api/services/postService";
 import { useTranslation } from "react-i18next";
 import { ButtonType } from "../../button/StyledButton";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Post } from "../../../api/types";
+import { Post } from "../../../interfaces/post.interface";
 import { StyledDeletePostModalContainer } from "./DeletePostModalContainer";
 
 interface DeletePostModalProps {

@@ -1,6 +1,6 @@
 import { authAxios } from "../axiosConfig";
 import { S3Service } from "./S3Service";
-import { PostData } from "../types";
+import { PostData } from "../../interfaces/post.interface";
 
 export const createPost = async (data: PostData) => {
   const res = await authAxios.post(`/post`, data);

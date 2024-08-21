@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {StyledTweetContainer} from "./TweetContainer";
 import AuthorData from "./user-post-data/AuthorData";
-import type {Post, User} from "../../api/types";
+import type {User} from "../../interfaces/user.interface";
+import type {Post} from "../../interfaces/post.interface";
 import {StyledReactionsContainer} from "./ReactionsContainer";
 import Reaction from "./reaction/Reaction";
 import {me} from "../../api/services/userService";

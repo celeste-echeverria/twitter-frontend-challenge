@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getRecommendedUsers } from "../api/services/userService";
-import { Author } from "../api/types";
+import { Author } from "../interfaces/user.interface";
 
 interface UseGetRecommendationsProps {
   page: number;

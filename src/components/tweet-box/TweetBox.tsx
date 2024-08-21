@@ -13,7 +13,7 @@ import {StyledTweetBoxContainer} from "./TweetBoxContainer";
 import {StyledContainer} from "../common/Container";
 import {StyledButtonContainer} from "./ButtonContainer";
 import {useDispatch, useSelector} from "react-redux";
-import {User} from "../../api/types";
+import {User} from "../../interfaces/user.interface";
 import { RootState } from "../../redux/store";
 
 interface TweetBoxProps {
