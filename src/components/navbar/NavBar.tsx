@@ -16,26 +16,19 @@ import {StyledContainer} from "../common/Container";
 import {StyledIconContainer} from "./IconContainer";
 import {StyledNavItemsContainer} from "./navItem/NavItemsContainer";
 import {StyledP} from "../common/text";
-import {me} from "../../api/services/userService";
+import {useMe} from "../../api/services/userService";
 import {User} from "../../interfaces/user.interface";
 import ProfileLogoutPrompt from "../profile-logout/ProfileLogoutPrompt";
 
-const NavBar = () => {
+const NavBar =  () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [tweetModalOpen, setTweetModalOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
-  const [user, setUser] = useState<User>()
   const {t} = useTranslation();
 
-  useEffect(() => {
-    handleGetUser().then(r => setUser(r))
-  }, []);
-
-  const handleGetUser = async () => {
-    return await me()
-  }
-
+  const {data: user, isPending, isError, error} = useMe()
+  
   const handleAvatarClick = () => {
     if (window.innerWidth < 1265) {
       handleLogout();
@@ -48,6 +41,14 @@ const NavBar = () => {
     setLogoutOpen(!logoutOpen);
   };
 
+  if (isPending) {
+    return <span>Loading...</span>
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>
+  }
+  
   return (
       <StyledNavBarContainer>
         <StyledContainer flex={1}>

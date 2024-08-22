@@ -5,7 +5,7 @@ import type {User} from "../../interfaces/user.interface";
 import type {Post} from "../../interfaces/post.interface";
 import {StyledReactionsContainer} from "./ReactionsContainer";
 import Reaction from "./reaction/Reaction";
-import {me} from "../../api/services/userService";
+import {useMe} from "../../api/services/userService";
 import {createReaction, deleteReaction} from '../../api/services/reactionService'
 import {getPostById} from '../../api/services/postService'
 import {IconType} from "../icon/Icon";
@@ -25,15 +25,8 @@ const Tweet = ({post}: TweetProps) => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
   const navigate = useNavigate();
-  const [user, setUser] = useState<User>()
 
-  useEffect(() => {
-    handleGetUser().then(r => setUser(r))
-  }, []);
-
-  const handleGetUser = async () => {
-    return await me()
-  }
+  const {data: user, isPending, isError, error} = useMe()
 
   const getCountByType = (type: string): number => {
     return actualPost?.reactions?.filter((r) => r.type === type).length ?? 0;
@@ -57,6 +50,14 @@ const Tweet = ({post}: TweetProps) => {
         (r) => r.type === type && r.userId === user?.id
     );
   };
+
+  if (isPending) {
+    return <span>Loading...</span>
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>
+  }
 
   return (
       <StyledTweetContainer>

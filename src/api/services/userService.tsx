@@ -1,5 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { authAxios } from "../axiosConfig";
+import useCustomQuery from "../hooks/useCustomQuery";
+import { User } from "../../interfaces/user.interface";
 
 export const getRecommendedUsers = async (limit: number, skip: number) => {
   const res = await authAxios.get(`/user`, {
@@ -11,9 +13,8 @@ export const getRecommendedUsers = async (limit: number, skip: number) => {
   return res.data
 }
 
-export const me = async () => {
-  const res = await authAxios.get(`/user/me`);
-  return res.data
+export const useMe = () => {
+  return useCustomQuery<User | undefined>('/me', ['me'], true); 
 }
 
 //TODO: search abortcontroller and implement in user searches

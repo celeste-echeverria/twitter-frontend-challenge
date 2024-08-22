@@ -9,7 +9,7 @@ import {ButtonType} from "../../button/StyledButton";
 import {StyledPromptContainer} from "./PromptContainer";
 import {StyledContainer} from "../../common/Container";
 import {StyledP} from "../../common/text";
-import {me} from "../../../api/services/userService";
+import {useMe} from "../../../api/services/userService";
 import {User} from "../../../interfaces/user.interface";
 
 interface LogoutPromptProps {
@@ -21,21 +21,12 @@ const LogoutPrompt = ({ show }: LogoutPromptProps) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const [user, setUser] = useState<User>()
 
-
-  useEffect(() => {
-    handleGetUser().then(r => setUser(r))
-  }, []);
-
-  const handleGetUser = async () => {
-    return await me()
-  }
+  const {data: user, isPending, isError, error} = useMe()
 
   const handleClick = () => {
     setShowModal(true);
   };
-
 
   const handleLanguageChange = () => {
     if (i18n.language === "es") {
@@ -54,6 +45,14 @@ const LogoutPrompt = ({ show }: LogoutPromptProps) => {
     setShowPrompt(show);
   }, [show]);
 
+  if (isPending) {
+    return <span>Loading...</span>
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>
+  }
+  
   return (
     <>
       {showPrompt && (

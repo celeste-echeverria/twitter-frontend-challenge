@@ -81,7 +81,7 @@ Investigate about caching with [React query](https://tanstack.com/query) and imp
 
 The "user" object is used in many places, like Header, CommentPage, etc.
 
-In all these places, we fetch the user from the Backend with service.me().
+In all these places, we fetch the user from the Backend with service.useMe().
 
 If you haven't move this to a cache query provider, do it so this info is cached by the backend
 

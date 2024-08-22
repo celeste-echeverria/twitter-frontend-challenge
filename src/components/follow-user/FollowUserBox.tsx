@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Button from "../button/Button";
 import {unfollowUser, followUser} from "../../api/services/followService";
-import {me} from "../../api/services/userService";
+import {useMe} from "../../api/services/userService";
 import UserDataBox from "../user-data-box/UserDataBox";
 import {useTranslation} from "react-i18next";
 import {ButtonType} from "../button/StyledButton";
@@ -22,20 +22,11 @@ const FollowUserBox = ({
     id,
   }: FollowUserBoxProps) => {
   const {t} = useTranslation();
-  const [user, setUser] = useState<User>()
 
-  useEffect(() => {
-    handleGetUser().then(r => {
-      setUser(r)
-      setIsFollowing(r?.following.some((f: Author) => f.id === id))
-    })
-  }, []);
+  const [isFollowing, setIsFollowing] = useState<boolean | undefined>(false);
 
-  const handleGetUser = async () => {
-    return await me()
-  }
-
-  const [isFollowing, setIsFollowing] = useState(false);
+  const {data, isPending, isError, error} = useMe()
+  setIsFollowing(data?.following.some((f: Author) => f.id === id))
 
   const handleFollow = async () => {
     if (isFollowing) {
@@ -45,6 +36,14 @@ const FollowUserBox = ({
     }
     setIsFollowing(!isFollowing);
   };
+
+  if (isPending) {
+    return <span>Loading...</span>
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>
+  }
 
   return (
       <div className="box-container">

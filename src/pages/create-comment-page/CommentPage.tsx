@@ -6,7 +6,7 @@ import {User} from "../../interfaces/user.interface";
 import AuthorData from "../../components/tweet/user-post-data/AuthorData";
 import ImageContainer from "../../components/tweet/tweet-image/ImageContainer";
 import { useLocation } from "react-router-dom";
-import { me } from "../../api/services/userService";
+import { useMe } from "../../api/services/userService";
 import { getPostById, getPosts } from "../../api/services/postService";
 import TweetInput from "../../components/tweet-input/TweetInput";
 import ImageInput from "../../components/common/ImageInput";
@@ -22,19 +22,12 @@ const CommentPage = () => {
   const [content, setContent] = useState("");
   const [post, setPost] = useState<Post | undefined>(undefined);
   const [images, setImages] = useState<File[]>([]);
-  const [user, setUser] = useState<User>()
   const postId = useLocation().pathname.split("/")[3];
   const { length, query } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    handleGetUser().then(r => setUser(r))
-  }, []);
-
-  const handleGetUser = async () => {
-    return await me()
-  }
+  const {data: user, isPending, isError, error} = useMe()
 
   useEffect(() => {
     window.innerWidth > 600 && exit();
@@ -66,6 +59,14 @@ const CommentPage = () => {
     const newImages = images.filter((i, idx) => idx !== index);
     setImages(newImages);
   };
+
+  if (isPending) {
+    return <span>Loading...</span>
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>
+  }
 
   return (
     <StyledContainer padding={"16px"}>

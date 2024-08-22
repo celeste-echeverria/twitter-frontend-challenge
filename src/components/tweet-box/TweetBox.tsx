@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import Button from "../button/Button";
 import TweetInput from "../tweet-input/TweetInput";
-import {me} from "../../api/services/userService";
+import {useMe} from "../../api/services/userService";
 import {getPosts} from "../../api/services/postService";
 import {setLength, updateFeed} from "../../redux/user";
 import ImageContainer from "../tweet/tweet-image/ImageContainer";
@@ -31,15 +31,8 @@ const TweetBox: React.FC<TweetBoxProps> = ({parentId, close, mobile}: TweetBoxPr
     const {length, query} = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
     const {t} = useTranslation();
-    const [user, setUser] = useState<User | null>(null)
 
-    useEffect(() => {
-        handleGetUser().then(setUser)
-    }, []);
-
-    const handleGetUser = async () => {
-        return await me()
-    }
+    const {data: user, isPending, isError, error} = useMe();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setContent(e.target.value);
@@ -71,6 +64,14 @@ const TweetBox: React.FC<TweetBoxProps> = ({parentId, close, mobile}: TweetBoxPr
         const newImagesPreview = newImages.map((i) => URL.createObjectURL(i));
         setImagesPreview(newImagesPreview);
     };
+
+    if (isPending) {
+        return <span>Loading...</span>
+    }
+    
+    if (isError) {
+        return <span>Error: {error.message}</span>
+    }
 
     return (
         <StyledTweetBoxContainer>

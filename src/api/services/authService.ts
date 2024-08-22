@@ -1,7 +1,6 @@
 import { authAxios, noAuthAxios } from "../axiosConfig";
 import { SingInData, SingUpData } from "../../interfaces/auth.interface";
 
-//TODO: JUANMA preguntar si en signup, signin mando con o sin header de Authorization
 export const signUp = async (data: Partial<SingUpData>) => {
   const res = await noAuthAxios.post(`/auth/signup`, data);
   if (res.status === 201) {

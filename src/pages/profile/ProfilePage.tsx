@@ -5,7 +5,7 @@ import Modal from "../../components/modal/Modal";
 import {useTranslation} from "react-i18next";
 import {User} from "../../interfaces/user.interface";
 import {ButtonType} from "../../components/button/StyledButton";
-import {me, getProfile, deleteProfile, getProfileView} from "../../api/services/userService";
+import {useMe, getProfile, deleteProfile, getProfileView} from "../../api/services/userService";
 import {followUser, unfollowUser} from "../../api/services/followService";
 import Button from "../../components/button/Button";
 import ProfileFeed from "../../components/feed/ProfileFeed";
@@ -23,21 +23,12 @@ const ProfilePage = () => {
     buttonText: "",
   });
 
-  const [user, setUser] = useState<User>()
-
   const id = useParams().id;
   const navigate = useNavigate();
 
   const {t} = useTranslation();
 
-
-  useEffect(() => {
-    handleGetUser().then(r => setUser(r))
-  }, []);
-
-  const handleGetUser = async () => {
-    return await me()
-  }
+  const {data: user, isPending, isError, error} = useMe()
 
   const handleButtonType = (): { component: ButtonType; text: string } => {
     if (profile?.id === user?.id)

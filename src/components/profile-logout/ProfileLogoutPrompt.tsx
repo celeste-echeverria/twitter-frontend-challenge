@@ -7,7 +7,7 @@ import React, {useEffect, useState} from "react";
 import icon from "../../assets/icon.jpg";
 import {StyledP} from "../common/text";
 import {StyledContainer} from "../common/Container";
-import {me} from "../../api/services/userService";
+import {useMe} from "../../api/services/userService";
 import {User} from "../../interfaces/user.interface";
 
 
@@ -18,17 +18,8 @@ interface ProfileLogoutPromptProps {
 
 const ProfileLogoutPrompt = ({margin, direction}: ProfileLogoutPromptProps) => {
     const [logoutOpen, setLogoutOpen] = useState(false);
-    const [user, setUser] = useState<User>()
 
-
-    useEffect(() => {
-        handleGetUser().then(r => setUser(r))
-    }, []);
-
-    const handleGetUser = async () => {
-        return await me()
-    }
-
+    const {data: user, isPending, isError, error} = useMe()
 
     const handleLogout = () => {
         setLogoutOpen(!logoutOpen);
@@ -38,6 +29,13 @@ const ProfileLogoutPrompt = ({margin, direction}: ProfileLogoutPromptProps) => {
         event.stopPropagation();
     };
 
+    if (isPending) {
+        return <span>Loading...</span>
+    }
+
+    if (isError) {
+        return <span>Error: {error.message}</span>
+    }
 
     return (
         <StyledContainer
