@@ -9,8 +9,8 @@ import {ButtonType} from "../../button/StyledButton";
 import {StyledPromptContainer} from "./PromptContainer";
 import {StyledContainer} from "../../common/Container";
 import {StyledP} from "../../common/text";
-import {useMe} from "../../../api/services/userService";
 import {User} from "../../../interfaces/user.interface";
+import { useGetMe } from "../../../hooks/useGetMe";
 
 interface LogoutPromptProps {
   show: boolean;
@@ -22,7 +22,7 @@ const LogoutPrompt = ({ show }: LogoutPromptProps) => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
-  const {data: user, isPending, isError, error} = useMe()
+  const {user, userIsLoading, userIsError, userError} = useGetMe()
 
   const handleClick = () => {
     setShowModal(true);
@@ -45,14 +45,6 @@ const LogoutPrompt = ({ show }: LogoutPromptProps) => {
     setShowPrompt(show);
   }, [show]);
 
-  if (isPending) {
-    return <span>Loading...</span>
-  }
-
-  if (isError) {
-    return <span>Error: {error.message}</span>
-  }
-  
   return (
     <>
       {showPrompt && (

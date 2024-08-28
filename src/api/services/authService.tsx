@@ -1,7 +1,7 @@
 import { authAxios, noAuthAxios } from "../axiosConfig";
-import { SingInData, SingUpData } from "../../interfaces/auth.interface";
+import { SignInData, SignUpData } from "../../interfaces/auth.interface";
 
-export const signUp = async (data: Partial<SingUpData>) => {
+export const signUp = async (data: Partial<SignUpData>) => {
   const res = await noAuthAxios.post(`/auth/signup`, data);
   if (res.status === 201) {
     localStorage.setItem("token", `Bearer ${res.data.token}`);
@@ -9,7 +9,7 @@ export const signUp = async (data: Partial<SingUpData>) => {
   }
 }
 
-export const signIn = async (data: SingInData) => {
+export const signIn = async (data: SignInData) => {
   const res = await noAuthAxios.post(`/auth/login`, data);
   if (res.status === 200) {
     localStorage.setItem("token", `Bearer ${res.data.token}`);

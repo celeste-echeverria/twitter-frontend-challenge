@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getRecommendedUsers } from "../api/services/userService";
 import { Author } from "../interfaces/user.interface";
+import useCustomQuery from "../api/hooks/useCustomQuery";
 
 interface UseGetRecommendationsProps {
   page: number;
@@ -8,38 +8,35 @@ interface UseGetRecommendationsProps {
 
 export const useGetRecommendations = ({ page }: UseGetRecommendationsProps) => {
   const [users, setUsers] = useState<Author[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
   const [hasMore, setHasMore] = useState(true); // Nuevo estado para verificar si hay más elementos
 
-  const getUsers = async () => {
-    return await getRecommendedUsers(10, page);
-  };
+  const { data, isLoading, isError, error } = useCustomQuery<Author[]>({
+    path: `/users`,
+    queryKey: [`recommendedUsers`],
+    params: {limit: 10, skip: page}
+  });
 
   useEffect(() => {
-    if (page !== undefined && hasMore) {
-      setLoading(true);
-      getUsers()
-        .then((response) => {
-          if (response.length === 0) {
-            setHasMore(false);
-          } else {
-            setUsers((prev) => {
-              const uniqueIds = new Set(prev.map((user) => user.id));
-              const filteredUsers = response.filter(
-                (user: Author) => !uniqueIds.has(user.id)
-              );
-              return [...prev, ...filteredUsers];
-            });
-          }
-          setLoading(false);
-        })
-        .catch((e) => {
-          setError(e);
-          setLoading(false);
-        });
-    }
-  }, [page, hasMore]);
+    const fetchUsers = async () => {
+      if (page !== undefined && hasMore) {
+        if (data && data.length === 0) {
+          setHasMore(false);
+        } else if (data) {
+          setUsers((prev) => {
+            const uniqueIds = new Set(prev.map((user) => user.id));
+            const filteredUsers = data.filter(
+              (user: Author) => !uniqueIds.has(user.id)
+            );
+            return [...prev, ...filteredUsers];
+          });
+        }
+        
+      }
+    };
+  
+    fetchUsers();
+  }, [page, hasMore, data]);
+  
 
-  return { users, loading, error };
+  return { users, isLoading, isError, error };
 };

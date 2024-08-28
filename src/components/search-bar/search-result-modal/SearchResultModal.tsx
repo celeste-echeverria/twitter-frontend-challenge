@@ -12,7 +12,6 @@ export const SearchResultModal = ({
   show,
   results,
 }: SearchResultModalProps) => {
-  console.log(results)
   return (
     <>
       {show && (

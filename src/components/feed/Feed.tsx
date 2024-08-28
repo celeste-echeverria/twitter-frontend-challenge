@@ -7,6 +7,7 @@ import Loader from "../loader/Loader";
 interface FeedProps {
   posts: Post[];
   loading: boolean;
+  error?: any
 }
 
 const Feed = ({ posts, loading }: FeedProps) => {

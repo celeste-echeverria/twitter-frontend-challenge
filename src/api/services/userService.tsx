@@ -13,14 +13,11 @@ export const getRecommendedUsers = async (limit: number, skip: number) => {
   return res.data
 }
 
-export const useMe = () => {
-  return useCustomQuery<User | undefined>('/me', ['me'], true); 
-}
 
 //TODO: search abortcontroller and implement in user searches
 export const searchUsers = async (username: string, limit: number, skip: number, signal: AbortSignal) => {
   try {
-
+    
     const res = await authAxios.get(`/user/search`, {
       params: {
         username,
@@ -34,7 +31,7 @@ export const searchUsers = async (username: string, limit: number, skip: number,
 
   } catch (error: any) {
     if (error.name === 'AbortError') {  
-      console.log('Request was aborted');
+      console.log('Request was aborted'); 
     } else {
       console.error('Request failed:', error);
     }  
@@ -42,7 +39,11 @@ export const searchUsers = async (username: string, limit: number, skip: number,
 }
 
 export const getProfile = async (id: string) => {
-  const res = await authAxios.get(`/user/${id}`);
+  const res = await authAxios.get(`/user`, {
+    params: {
+      userId: id
+    }
+  });
   return res.data
 }
 

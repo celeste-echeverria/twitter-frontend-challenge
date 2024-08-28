@@ -7,8 +7,8 @@ import React, {useEffect, useState} from "react";
 import icon from "../../assets/icon.jpg";
 import {StyledP} from "../common/text";
 import {StyledContainer} from "../common/Container";
-import {useMe} from "../../api/services/userService";
 import {User} from "../../interfaces/user.interface";
+import { useGetMe } from "../../hooks/useGetMe";
 
 
 interface ProfileLogoutPromptProps {
@@ -19,7 +19,7 @@ interface ProfileLogoutPromptProps {
 const ProfileLogoutPrompt = ({margin, direction}: ProfileLogoutPromptProps) => {
     const [logoutOpen, setLogoutOpen] = useState(false);
 
-    const {data: user, isPending, isError, error} = useMe()
+    const {user, userIsLoading, userIsError, userError} = useGetMe()
 
     const handleLogout = () => {
         setLogoutOpen(!logoutOpen);
@@ -28,14 +28,6 @@ const ProfileLogoutPrompt = ({margin, direction}: ProfileLogoutPromptProps) => {
     const handleButtonClick = (event: React.MouseEvent) => {
         event.stopPropagation();
     };
-
-    if (isPending) {
-        return <span>Loading...</span>
-    }
-
-    if (isError) {
-        return <span>Error: {error.message}</span>
-    }
 
     return (
         <StyledContainer

@@ -9,17 +9,13 @@ import LabeledInput from "../../../components/labeled-input/LabeledInput";
 import Button from "../../../components/button/Button";
 import { ButtonType } from "../../../components/button/StyledButton";
 import { StyledH3 } from "../../../components/common/text";
+import { SignUpData } from "../../../interfaces/auth.interface";
 
-interface SignUpData {
-  name: string;
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+
 const SignUpPage = () => {
   const [data, setData] = useState<Partial<SignUpData>>({});
   const [error, setError] = useState(false);
+
 
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -28,6 +24,7 @@ const SignUpPage = () => {
     (prop: string) => (event: ChangeEvent<HTMLInputElement>) => {
       setData({ ...data, [prop]: event.target.value });
     };
+
   const handleSubmit = async () => {
     const { confirmPassword, ...requestData } = data;
     signUp(requestData)

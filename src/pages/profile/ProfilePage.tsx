@@ -5,12 +5,13 @@ import Modal from "../../components/modal/Modal";
 import {useTranslation} from "react-i18next";
 import {User} from "../../interfaces/user.interface";
 import {ButtonType} from "../../components/button/StyledButton";
-import {useMe, getProfile, deleteProfile, getProfileView} from "../../api/services/userService";
+import {getProfile, deleteProfile, getProfileView} from "../../api/services/userService";
 import {followUser, unfollowUser} from "../../api/services/followService";
 import Button from "../../components/button/Button";
 import ProfileFeed from "../../components/feed/ProfileFeed";
 import {StyledContainer} from "../../components/common/Container";
 import {StyledH5} from "../../components/common/text";
+import { useGetMe } from "../../hooks/useGetMe";
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState<User | null>(null);
@@ -23,12 +24,35 @@ const ProfilePage = () => {
     buttonText: "",
   });
 
-  const id = useParams().id;
   const navigate = useNavigate();
 
   const {t} = useTranslation();
 
-  const {data: user, isPending, isError, error} = useMe()
+  const {user, userIsLoading, userIsError, userError} = useGetMe()
+  const id = user?.id
+
+  const getProfileData = async () => {
+    if(id)
+    getProfile(id)
+      .then((res) => {
+        setProfile(res);
+        setFollowing(
+            res
+                ? res?.followers.some((follower: User) => follower.id === user?.id)
+                : false
+        );
+      })
+      .catch(() => {
+          getProfileView(id)
+          .then((res) => {
+            setProfile(res);
+            setFollowing(false);
+          })
+          .catch((error2) => {
+            console.log(error2);
+          });
+      });
+  };
 
   const handleButtonType = (): { component: ButtonType; text: string } => {
     if (profile?.id === user?.id)
@@ -85,28 +109,6 @@ const ProfilePage = () => {
     }
   };
 
-  const getProfileData = async () => {
-    console.log(id);
-    getProfile(id)
-      .then((res) => {
-        setProfile(res);
-        setFollowing(
-            res
-                ? res?.followers.some((follower: User) => follower.id === user?.id)
-                : false
-        );
-      })
-      .catch(() => {
-          getProfileView(id)
-          .then((res) => {
-            setProfile(res);
-            setFollowing(false);
-          })
-          .catch((error2) => {
-            console.log(error2);
-          });
-      });
-  };
 
   return (
       <>

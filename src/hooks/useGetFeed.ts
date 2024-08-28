@@ -1,31 +1,26 @@
 import { useEffect, useState } from "react";
-import { getPosts } from "../api/services/postService";
 import { setLength, updateFeed } from "../redux/user";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import useCustomQuery from "../api/hooks/useCustomQuery";
+import { Post } from "../interfaces/post.interface";
 
 export const useGetFeed = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
   const posts = useAppSelector((state) => state.user.feed);
   const query = useAppSelector((state) => state.user.query);
-
   const dispatch = useAppDispatch();
+  
+  const { data, isLoading, isError, error } = useCustomQuery<Post[]>({
+    path: `/post/${query}`,
+    queryKey: [`post${query}`] 
+  });
 
   useEffect(() => {
-    try {
-      setLoading(true);
-      setError(false);
-      getPosts(query).then((res) => {
-        const updatedPosts = Array.from(new Set([...posts, ...res]));
-        dispatch(updateFeed(updatedPosts));
-        dispatch(setLength(updatedPosts.length));
-        setLoading(false);
-      });
-    } catch (e) {
-      setError(true);
-      console.log(e);
+    if(data && data.length>0){
+      const updatedPosts = Array.from(new Set([...posts, ...data]));
+      dispatch(updateFeed(updatedPosts));
+      dispatch(setLength(updatedPosts.length));
     }
-  }, [query]);
+  }, [data, query]);
 
-  return { posts, loading, error };
+  return { posts, postsIsLoading: isLoading, postsIsError: isError, postsError: error };
 };

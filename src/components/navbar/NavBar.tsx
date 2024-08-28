@@ -16,9 +16,9 @@ import {StyledContainer} from "../common/Container";
 import {StyledIconContainer} from "./IconContainer";
 import {StyledNavItemsContainer} from "./navItem/NavItemsContainer";
 import {StyledP} from "../common/text";
-import {useMe} from "../../api/services/userService";
 import {User} from "../../interfaces/user.interface";
 import ProfileLogoutPrompt from "../profile-logout/ProfileLogoutPrompt";
+import { useGetMe } from "../../hooks/useGetMe";
 
 const NavBar =  () => {
   const location = useLocation();
@@ -27,7 +27,7 @@ const NavBar =  () => {
   const [logoutOpen, setLogoutOpen] = useState(false);
   const {t} = useTranslation();
 
-  const {data: user, isPending, isError, error} = useMe()
+  const {user, userIsLoading, userIsError, userError} = useGetMe()
   
   const handleAvatarClick = () => {
     if (window.innerWidth < 1265) {
@@ -41,14 +41,6 @@ const NavBar =  () => {
     setLogoutOpen(!logoutOpen);
   };
 
-  if (isPending) {
-    return <span>Loading...</span>
-  }
-
-  if (isError) {
-    return <span>Error: {error.message}</span>
-  }
-  
   return (
       <StyledNavBarContainer>
         <StyledContainer flex={1}>

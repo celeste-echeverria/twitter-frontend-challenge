@@ -10,13 +10,13 @@ import { StyledH5 } from "../../components/common/text";
 
 const RecommendationPage = () => {
   const [page, setPage] = useState(0);
-  const { users, loading } = useGetRecommendations({ page });
+  const { users, isLoading, isError, error } = useGetRecommendations({ page });
   const { t } = useTranslation();
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastRecommendation = useCallback(
     (node: Element | null) => {
-      if (loading) return;
+      if (isLoading) return;
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
@@ -27,8 +27,12 @@ const RecommendationPage = () => {
 
       if (node) observer.current.observe(node);
     },
-    [loading, setPage]
+    [isLoading, setPage]
   );
+
+  if (isError) {
+    return <span>Error: {error?.message}</span>
+  }
 
   return (
     <StyledContainer maxWidth={"600px"} borderRight={"1px solid"}>

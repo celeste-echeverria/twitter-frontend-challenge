@@ -6,7 +6,6 @@ import {User} from "../../interfaces/user.interface";
 import AuthorData from "../../components/tweet/user-post-data/AuthorData";
 import ImageContainer from "../../components/tweet/tweet-image/ImageContainer";
 import { useLocation } from "react-router-dom";
-import { useMe } from "../../api/services/userService";
 import { getPostById, getPosts } from "../../api/services/postService";
 import TweetInput from "../../components/tweet-input/TweetInput";
 import ImageInput from "../../components/common/ImageInput";
@@ -17,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { StyledContainer } from "../../components/common/Container";
 import { StyledLine } from "../../components/common/Line";
 import { StyledP } from "../../components/common/text";
+import { useGetMe } from "../../hooks/useGetMe";
 
 const CommentPage = () => {
   const [content, setContent] = useState("");
@@ -27,7 +27,7 @@ const CommentPage = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
-  const {data: user, isPending, isError, error} = useMe()
+  const {user, userIsLoading, userIsError, userError} = useGetMe()
 
   useEffect(() => {
     window.innerWidth > 600 && exit();
@@ -59,14 +59,6 @@ const CommentPage = () => {
     const newImages = images.filter((i, idx) => idx !== index);
     setImages(newImages);
   };
-
-  if (isPending) {
-    return <span>Loading...</span>
-  }
-
-  if (isError) {
-    return <span>Error: {error.message}</span>
-  }
 
   return (
     <StyledContainer padding={"16px"}>

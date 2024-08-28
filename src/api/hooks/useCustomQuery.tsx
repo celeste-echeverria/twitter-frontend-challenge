@@ -1,10 +1,18 @@
 import { QueryKey } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query"; 
 import { fetcher } from "./fetcher";
+import { QueryParams } from ".";
 
-export default function useCustomQuery<T>(path: string, queryKey: QueryKey, authRequired: boolean) {
-    return useQuery<T>({
-        queryKey: [queryKey], 
-        queryFn: () => fetcher(path, authRequired),
+interface useCustomQueryProps {
+    path: string,
+    queryKey: QueryKey, 
+    params?: QueryParams
+}
+
+export default function useCustomQuery<TResultData>({ path, queryKey, params}: useCustomQueryProps) {
+    return useQuery<TResultData>({
+        queryKey, 
+        queryFn: async () => fetcher(path, params),
+        retry: false, 
     });
 }

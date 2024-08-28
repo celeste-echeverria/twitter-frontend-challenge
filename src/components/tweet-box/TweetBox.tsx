@@ -1,7 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import Button from "../button/Button";
 import TweetInput from "../tweet-input/TweetInput";
-import {useMe} from "../../api/services/userService";
 import {getPosts} from "../../api/services/postService";
 import {setLength, updateFeed} from "../../redux/user";
 import ImageContainer from "../tweet/tweet-image/ImageContainer";
@@ -15,6 +14,8 @@ import {StyledButtonContainer} from "./ButtonContainer";
 import {useDispatch, useSelector} from "react-redux";
 import {User} from "../../interfaces/user.interface";
 import { RootState } from "../../redux/store";
+import { useGetMe } from "../../hooks/useGetMe";
+import { useGetFeed } from "../../hooks/useGetFeed";
 
 interface TweetBoxProps {
     parentId?: string,
@@ -32,7 +33,8 @@ const TweetBox: React.FC<TweetBoxProps> = ({parentId, close, mobile}: TweetBoxPr
     const dispatch = useDispatch();
     const {t} = useTranslation();
 
-    const {data: user, isPending, isError, error} = useMe();
+    const {user, userIsLoading, userIsError, userError} = useGetMe();
+    const {posts, postsIsLoading, postsIsError, postsError} = useGetFeed()
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setContent(e.target.value);
@@ -44,7 +46,6 @@ const TweetBox: React.FC<TweetBoxProps> = ({parentId, close, mobile}: TweetBoxPr
             setImages([]);
             setImagesPreview([]);
             dispatch(setLength(length + 1));
-            const posts = await getPosts(query);
             dispatch(updateFeed(posts));
             close && close();
         } catch (e) {
@@ -64,14 +65,6 @@ const TweetBox: React.FC<TweetBoxProps> = ({parentId, close, mobile}: TweetBoxPr
         const newImagesPreview = newImages.map((i) => URL.createObjectURL(i));
         setImagesPreview(newImagesPreview);
     };
-
-    if (isPending) {
-        return <span>Loading...</span>
-    }
-    
-    if (isError) {
-        return <span>Error: {error.message}</span>
-    }
 
     return (
         <StyledTweetBoxContainer>

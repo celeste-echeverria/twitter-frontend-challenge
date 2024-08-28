@@ -10,11 +10,10 @@ export const useGetProfilePosts = () => {
   const posts = useAppSelector((state) => state.user.feed);
   const dispatch = useAppDispatch();
 
-  const { data, isLoading, isError } = useCustomQuery<Post[]>(
-    `/posts/profile/${id}`,
-    ['profilePosts', id],
-    true 
-  );
+  const { data, isLoading, isError, error } = useCustomQuery<Post[]>({
+    path: `/posts/profile/${id}`,
+    queryKey: [`profilePosts${id}`] 
+  });
 
   useEffect(() => {
     if (data) {
@@ -23,7 +22,7 @@ export const useGetProfilePosts = () => {
       );
       dispatch(updateFeed(updatedPosts));
     }
-  }, [data, id, posts, dispatch]);
+  }, [data, id, posts]);
 
-  return { posts, loading: isLoading, error: isError };
+  return { posts, isLoading, isError, error };
 };
