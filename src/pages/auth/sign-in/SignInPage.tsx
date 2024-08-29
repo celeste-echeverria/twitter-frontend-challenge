@@ -2,24 +2,34 @@ import React, { useState } from "react";
 import logo from "../../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { signIn } from "../../../api/services/authService";
 import AuthWrapper from "../AuthWrapper";
 import LabeledInput from "../../../components/labeled-input/LabeledInput";
 import Button from "../../../components/button/Button";
 import { ButtonType } from "../../../components/button/StyledButton";
 import { StyledH3 } from "../../../components/common/text";
+import { useSignIn } from "../../../hooks/useSignIn";
+import { User } from "../../../interfaces/user.interface";
 
 const SignInPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const handleSubmit = () => {
-    signIn({ email, password })
-      .then(() => navigate("/"))
-      .catch(() => setError(true));
+  const { mutate, isPending, isError, error } = useSignIn({
+    onSuccess: () => {
+      //todo: check token return
+      navigate('/');
+    },
+    onError: () => {
+      //todo: toast
+    }
+
+  });
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    mutate({email, password});
   };
 
   return (
@@ -35,7 +45,7 @@ const SignInPage = () => {
               required
               placeholder={"Enter user..."}
               title={t("input-params.username")}
-              error={error}
+              error={isError}
               onChange={(e) => setEmail(e.target.value)}
             />
             <LabeledInput
@@ -43,7 +53,7 @@ const SignInPage = () => {
               required
               placeholder={"Enter password..."}
               title={t("input-params.password")}
-              error={error}
+              error={isError}
               onChange={(e) => setPassword(e.target.value)}
             />
             <p className={"error-message"}>{error && t("error.login")}</p>

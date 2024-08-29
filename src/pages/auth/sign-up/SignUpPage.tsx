@@ -4,32 +4,43 @@ import logo from "../../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import AuthWrapper from "../../../pages/auth/AuthWrapper";
-import { signUp } from "../../../api/services/authService";
 import LabeledInput from "../../../components/labeled-input/LabeledInput";
 import Button from "../../../components/button/Button";
 import { ButtonType } from "../../../components/button/StyledButton";
 import { StyledH3 } from "../../../components/common/text";
-import { SignUpData } from "../../../interfaces/auth.interface";
+import { SignInData, SignUpData } from "../../../interfaces/auth.interface";
+import { useSignUp } from "../../../hooks/useSignUp";
+import { useMutation } from "@tanstack/react-query";
+import { authAxios } from "../../../api/axiosConfig";
 
 
 const SignUpPage = () => {
-  const [data, setData] = useState<Partial<SignUpData>>({});
-  const [error, setError] = useState(false);
 
-
+  const [data, setData] = useState<SignUpData>({name: '', username: '', email: '', password: '', confirmPassword: ''});
+  
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const handleChange =
     (prop: string) => (event: ChangeEvent<HTMLInputElement>) => {
       setData({ ...data, [prop]: event.target.value });
-    };
+  };
 
-  const handleSubmit = async () => {
-    const { confirmPassword, ...requestData } = data;
-    signUp(requestData)
-      .then(() => navigate("/"))
-      .catch(() => setError(false));
+  const { confirmPassword, ...requestData } = data;
+
+  const { mutate, isPending, isError, error } = useSignUp({
+    onSuccess: () => {
+      //todo: check token return
+      navigate('/');
+    },
+    onError: () => {
+      //todo: toast
+    }
+  });
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    mutate(requestData);
   };
 
   return (
@@ -45,21 +56,21 @@ const SignUpPage = () => {
               required
               placeholder={"Enter name..."}
               title={t("input-params.name")}
-              error={error}
+              error={isError}
               onChange={handleChange("name")}
             />
             <LabeledInput
               required
               placeholder={"Enter username..."}
               title={t("input-params.username")}
-              error={error}
+              error={isError}
               onChange={handleChange("username")}
             />
             <LabeledInput
               required
               placeholder={"Enter email..."}
               title={t("input-params.email")}
-              error={error}
+              error={isError}
               onChange={handleChange("email")}
             />
             <LabeledInput
@@ -67,7 +78,7 @@ const SignUpPage = () => {
               required
               placeholder={"Enter password..."}
               title={t("input-params.password")}
-              error={error}
+              error={isError}
               onChange={handleChange("password")}
             />
             <LabeledInput
@@ -75,7 +86,7 @@ const SignUpPage = () => {
               required
               placeholder={"Confirm password..."}
               title={t("input-params.confirm-password")}
-              error={error}
+              error={isError}
               onChange={handleChange("confirmPassword")}
             />
           </div>

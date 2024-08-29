@@ -3,12 +3,11 @@ export interface SignUpData {
   password: string;
   email: string;
   username: string;
-  confirmPassword: string
+  confirmPassword?: string
 }
 
 export interface SignInData {
-  username?: string;
-  email?: string;
+  email: string;
   password: string;
 }
 
