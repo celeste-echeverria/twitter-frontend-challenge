@@ -4,17 +4,11 @@ import { Author } from "../interfaces/user.interface";
 import { profile } from "console";
 
 export const useGetUserProfile = (userId: any) => {
-  console.log('getuserprofile fetches user/ with params', userId)
 
-  const { data, isLoading, isError, error } = useCustomQuery({
+  const { data, isLoading, isError, error, refetch } = useCustomQuery({
     endpoint: `/user/${userId}`, 
-    params: {
-      userId: userId
-    },
-    queryKey: [`userProfile`]
+    queryKey: ['userProfile', userId]
   });
 
-  console.log('returned profile:', data)
-
-  return {profile: data, profileIsLoading: isLoading, profileIsError: isError, profileError: error}
+  return {profile: data, profileIsLoading: isLoading, profileIsError: isError, profileError: error, refetch }
 }

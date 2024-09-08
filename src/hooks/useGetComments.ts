@@ -14,7 +14,7 @@ export const useGetComments = ({ postId }: UseGetCommentsProps) => {
 
   const { data, isLoading, isError, error } = useCustomQuery<Post[]>({
     endpoint: `/post/comments/by_post/${postId}`,
-    queryKey: [`postComments${postId}`]
+    queryKey: ['postComments', postId]
   })
 
   useEffect(() => {

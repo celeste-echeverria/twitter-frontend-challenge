@@ -8,6 +8,5 @@ export const useVerifyAuth = () => {
     returnFullResponse: true
   });
 
-  console.log(data)
   return {data, isLoading, isError, error}
 }

@@ -3,26 +3,19 @@ import { updateFeed } from "../redux/user";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import useCustomQuery from "../api/hooks/useCustomQuery";
-import { Post } from "../interfaces/post.interface";
+import { Page, Post, PostData } from "../interfaces/post.interface";
+import useInfiniteCustomQuery from "../api/hooks/useInfiniteQuery";
+import { LIMIT } from "../util/Constants";
 
-export const useGetProfilePosts = () => {
-  const { id } = useParams<{ id: string }>();
-  const posts = useAppSelector((state) => state.user.feed);
-  const dispatch = useAppDispatch();
 
-  const { data, isLoading, isError, error } = useCustomQuery<Post[]>({
-    endpoint: `/posts/profile/${id}`,
-    queryKey: [`profilePosts${id}`] 
-  });
-
-  useEffect(() => {
-    if (data) {
-      const updatedPosts = Array.from(new Set([...posts, ...data.data])).filter(
-        (post) => post.authorId === id
-      );
-      dispatch(updateFeed(updatedPosts));
+export const useGetProfilePosts = ({ userId }: { userId: string }) => {
+  
+  return useInfiniteCustomQuery<Page[]>({
+    endpoint: `/post/by_user/${userId}`,
+    queryKey: ['userPosts', userId],
+    params: {
+      limit: LIMIT,
     }
-  }, [data, id, posts]);
-
-  return { posts, isLoading, isError, error };
+  });
+  
 };

@@ -13,7 +13,7 @@ export const useGetRecommendations = ({ page }: UseGetRecommendationsProps) => {
   const { data, isLoading, isError, error } = useCustomQuery<Author[]>({
     endpoint: `/user`,
     queryKey: [`recommendedUsers`],
-    params: {limit: 10, skip: page}
+    params: {limit: 10}
   });
 
   useEffect(() => {

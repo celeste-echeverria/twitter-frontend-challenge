@@ -19,7 +19,7 @@ export const useGetSearchUsers = ({
   const { data, isLoading, isError, error } = useCustomQuery<Author[]>({
     endpoint: `/users/search`,
     queryKey: [`searchUsers`, query, skip],
-    params:{ limit: LIMIT, skip },
+    params:{ limit: LIMIT },
   });
 
   useEffect(() => {

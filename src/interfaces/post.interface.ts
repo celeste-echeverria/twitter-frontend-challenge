@@ -19,3 +19,13 @@ export interface Post {
     comments: Post[];
 }
   
+export type TPage = {
+    hasMore: boolean,
+    nextCursor: string | null,
+    posts: Post[];
+}
+export interface Page {
+    hasMore: boolean,
+    nextCursor: string | null,
+    posts: Post[];
+}

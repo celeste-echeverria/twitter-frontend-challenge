@@ -33,7 +33,7 @@ async function fetcher<
 }: FetcherProps<TResultData, TStatus, TError>) {
   try {
 
-    console.log('fetching ', endpoint )
+    console.log('fetching ', endpoint, 'using params:', params)
     const config = { params };
     const token = localStorage.getItem("token");
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
@@ -44,7 +44,6 @@ async function fetcher<
       data: data,
       ...config
     });
-    console.log('RESPONSE FROM FETCHER IS ', res)
     return returnFullResponse ? res : res.data
     
   } catch (error) {

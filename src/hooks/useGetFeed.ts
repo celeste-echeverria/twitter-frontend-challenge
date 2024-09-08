@@ -11,7 +11,7 @@ export const useGetFeed = () => {
   
   const { data, isLoading, isError, error } = useCustomQuery<Post[]>({
     endpoint: `/post/${query}`,
-    queryKey: [`post${query}`] 
+    queryKey: ['post', query] 
   });
 
   useEffect(() => {
