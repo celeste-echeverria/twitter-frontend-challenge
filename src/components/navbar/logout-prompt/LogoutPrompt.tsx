@@ -9,7 +9,7 @@ import {ButtonType} from "../../button/StyledButton";
 import {StyledPromptContainer} from "./PromptContainer";
 import {StyledContainer} from "../../common/Container";
 import {StyledP} from "../../common/text";
-import {User} from "../../../interfaces/user.interface";
+import {Author} from "../../../interfaces/user.interface";
 import { useGetMe } from "../../../hooks/useGetMe";
 
 interface LogoutPromptProps {
@@ -38,6 +38,7 @@ const LogoutPrompt = ({ show }: LogoutPromptProps) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    console.log('navigating to sign in');
     navigate("/sign-in");
   };
 

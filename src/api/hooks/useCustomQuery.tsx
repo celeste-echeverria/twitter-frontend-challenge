@@ -1,18 +1,45 @@
 import { QueryKey } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query"; 
-import { fetcher } from "./fetcher";
+import  fetcher from "./fetcher";
 import { QueryParams } from ".";
 
-interface useCustomQueryProps {
-    path: string,
-    queryKey: QueryKey, 
-    params?: QueryParams
+type QueryProps <
+    TResultData = unknown,
+    TBody = unknown, 
+    TError = Error //TODO: revisar tipo de errores
+> = {
+    endpoint: string,
+    queryKey: QueryKey,
+    params?: QueryParams,
+    method?: string,
+    returnFullResponse?: boolean
 }
 
-export default function useCustomQuery<TResultData>({ path, queryKey, params}: useCustomQueryProps) {
-    return useQuery<TResultData>({
+function useCustomQuery<
+    TResultData = unknown,
+    TBody = unknown,
+    TError = Error //check
+>({ 
+    endpoint, 
+    queryKey, 
+    params,
+    method = 'GET',
+    returnFullResponse = false
+}: QueryProps) { 
+
+    return useQuery({
         queryKey, 
-        queryFn: async () => fetcher(path, params),
+        queryFn: async () => {
+            return await fetcher({
+                method: method,
+                endpoint,
+                params: params,
+                returnFullResponse
+            })
+        },
         retry: false, 
     });
+
 }
+
+export default useCustomQuery;

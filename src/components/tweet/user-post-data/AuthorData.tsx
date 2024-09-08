@@ -22,6 +22,7 @@ const AuthorData = ({
   const navigate = useNavigate();
 
   const redirectToProfile = () => {
+    console.log('navigating to profile');
     navigate(`/profile/${id}`);
   };
 

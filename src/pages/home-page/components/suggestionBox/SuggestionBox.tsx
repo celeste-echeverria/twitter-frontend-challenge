@@ -2,22 +2,14 @@ import React, { useEffect, useState } from "react";
 import FollowUserBox from "../../../../components/follow-user/FollowUserBox";
 import { getRecommendedUsers } from "../../../../api/services/userService";
 import { useTranslation } from "react-i18next";
-import { User } from "../../../../interfaces/user.interface";
+import { Author } from "../../../../interfaces/user.interface";
 import { StyledSuggestionBoxContainer } from "./SuggestionBoxContainer";
+import { useGetRecommendations } from "../../../../hooks/useGetRecommendations";
 
 const SuggestionBox = () => {
-  const [users, setUsers] = useState<User[]>([]);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    try {
-      getRecommendedUsers(6, 0).then((res) => {
-        setUsers(res);
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
+  const { users, isLoading, isError, error } = useGetRecommendations({page: 0});
 
   return (
     <StyledSuggestionBoxContainer>

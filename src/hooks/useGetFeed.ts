@@ -10,7 +10,7 @@ export const useGetFeed = () => {
   const dispatch = useAppDispatch();
   
   const { data, isLoading, isError, error } = useCustomQuery<Post[]>({
-    path: `/post/${query}`,
+    endpoint: `/post/${query}`,
     queryKey: [`post${query}`] 
   });
 

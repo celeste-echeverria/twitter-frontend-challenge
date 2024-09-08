@@ -21,8 +21,6 @@ const WithNav = () => {
   );
 };
 
-//todo: explore INTERCEPTOR
-
 export const ROUTER = createBrowserRouter([
   {
     path: "/sign-up",
@@ -39,7 +37,7 @@ export const ROUTER = createBrowserRouter([
         element: <WithNav />,
         children: [
           {
-            path: "/",
+            path: "/home",
             element: <HomePage />,
           },
           {

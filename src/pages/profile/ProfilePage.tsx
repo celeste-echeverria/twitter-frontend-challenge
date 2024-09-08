@@ -3,7 +3,7 @@ import ProfileInfo from "./ProfileInfo";
 import {useNavigate, useParams} from "react-router-dom";
 import Modal from "../../components/modal/Modal";
 import {useTranslation} from "react-i18next";
-import {User} from "../../interfaces/user.interface";
+import {Author} from "../../interfaces/user.interface";
 import {ButtonType} from "../../components/button/StyledButton";
 import {getProfile, deleteProfile, getProfileView} from "../../api/services/userService";
 import {followUser, unfollowUser} from "../../api/services/followService";
@@ -12,9 +12,12 @@ import ProfileFeed from "../../components/feed/ProfileFeed";
 import {StyledContainer} from "../../components/common/Container";
 import {StyledH5} from "../../components/common/text";
 import { useGetMe } from "../../hooks/useGetMe";
+import { useGetUserProfile } from "../../hooks/useGetUserProfile";
+import { useFollowUser } from "../../hooks/useFollowUser";
+import { Follow } from "../../interfaces/follow.interface";
+import { useUnfollowUser } from "../../hooks/useUnfollowUser";
 
 const ProfilePage = () => {
-  const [profile, setProfile] = useState<User | null>(null);
   const [following, setFollowing] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalValues, setModalValues] = useState({
@@ -25,64 +28,65 @@ const ProfilePage = () => {
   });
 
   const navigate = useNavigate();
-
+  const id = useParams().id;
   const {t} = useTranslation();
 
-  const {user, userIsLoading, userIsError, userError} = useGetMe()
-  const id = user?.id
+  const {user, userIsLoading} = useGetMe()
+  const {profile, profileIsLoading} = useGetUserProfile(id)
 
-  const getProfileData = async () => {
-    if(id)
-    getProfile(id)
-      .then((res) => {
-        setProfile(res);
-        setFollowing(
-            res
-                ? res?.followers.some((follower: User) => follower.id === user?.id)
-                : false
-        );
-      })
-      .catch(() => {
-          getProfileView(id)
-          .then((res) => {
-            setProfile(res);
-            setFollowing(false);
-          })
-          .catch((error2) => {
-            console.log(error2);
-          });
-      });
-  };
+  const {mutate: followUser, isPending: followIsPending} = useFollowUser({
+    userId: profile?.id,
+    onError: () => {
+      //toast
+      console.log('errorrrrrr')
+    },
+    onSuccess: () => {
+      setFollowing(true)
+    }
+  })
 
+  const {mutate: unfollowUser, isPending: unfollowIsPending} = useUnfollowUser({
+    userId: profile?.id,
+    onError: () => {
+      //toast
+      console.log('errorrrrrr')
+    },
+    onSuccess: () => {
+      setFollowing(false)}
+  })
+
+  console.log('profile is', profile)
+  console.log('user is', user)
+
+  const handleFollow = (event: any) => {
+    event.preventDefault();
+    followUser({userId: profile.id})
+  }
+
+  //If it's the user's profile, show delete button. If not, show follow button or unfollow button
   const handleButtonType = (): { component: ButtonType; text: string } => {
     if (profile?.id === user?.id)
       return {component: ButtonType.DELETE, text: t("buttons.delete")};
-    if (following)
+    if (profile.isFollowedByActiveUser)
       return {component: ButtonType.OUTLINED, text: t("buttons.unfollow")};
     else return {component: ButtonType.FOLLOW, text: t("buttons.follow")};
   };
 
-  const handleSubmit = () => {
+  //If it's the user's profile, deletes the profile and redirects to sign in.
+  //If not, unfollows the user and refetches the profile data
+  const handleSubmit = async () => {
     if (profile?.id === user?.id) {
       deleteProfile().then(() => {
         localStorage.removeItem("token");
         navigate("/sign-in");
       });
     } else {
-      unfollowUser(profile!.id).then(async () => {
-        setFollowing(false);
-        setShowModal(false);
-        await getProfileData();
-      });
+      await unfollowUser(profile!.id)
+      setFollowing(false);
+      setShowModal(false);
     }
   };
-
-  useEffect(() => {
-    getProfileData().then();
-  }, [id]);
-
-  if (!id) return null;
-
+  
   const handleButtonAction = async () => {
     if (profile?.id === user?.id) {
       setShowModal(true);
@@ -102,10 +106,9 @@ const ProfilePage = () => {
           buttonText: t("buttons.unfollow"),
         });
       } else {
-        await followUser(id);
-        getProfile(id).then((res) => setProfile(res));
+        await followUser({userId: profile.id})
+        setFollowing(true);
       }
-      return await getProfileData();
     }
   };
 

@@ -17,9 +17,9 @@ export const useGetSearchUsers = ({
   const [hasMore, setHasMore] = useState(false);
 
   const { data, isLoading, isError, error } = useCustomQuery<Author[]>({
-    path: `/users/search`,
+    endpoint: `/users/search`,
     queryKey: [`searchUsers`, query, skip],
-    params: { limit: LIMIT, skip }
+    params:{ limit: LIMIT, skip },
   });
 
   useEffect(() => {
@@ -28,14 +28,15 @@ export const useGetSearchUsers = ({
 
   useEffect(() => {
     if (data) {
-      const updatedUsers = [...users, ...data];
+      const updatedUsers = [...users, ...data.data];
       const uniqueUsers = updatedUsers.filter((user, index) => {
         const currentIndex = updatedUsers.findIndex((u) => u.id === user.id);
         return currentIndex === index;
       }).filter((user) => user.username.includes(query));
 
       setUsers(uniqueUsers);
-      setHasMore(data.length > 0);
+      setHasMore(data.data.length > 0);
+      //todo: check data
     }
   }, [data]);
 

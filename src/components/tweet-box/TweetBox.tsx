@@ -12,7 +12,7 @@ import {StyledTweetBoxContainer} from "./TweetBoxContainer";
 import {StyledContainer} from "../common/Container";
 import {StyledButtonContainer} from "./ButtonContainer";
 import {useDispatch, useSelector} from "react-redux";
-import {User} from "../../interfaces/user.interface";
+import {Author} from "../../interfaces/user.interface";
 import { RootState } from "../../redux/store";
 import { useGetMe } from "../../hooks/useGetMe";
 import { useGetFeed } from "../../hooks/useGetFeed";

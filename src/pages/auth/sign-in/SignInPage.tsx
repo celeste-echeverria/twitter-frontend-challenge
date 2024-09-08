@@ -8,7 +8,7 @@ import Button from "../../../components/button/Button";
 import { ButtonType } from "../../../components/button/StyledButton";
 import { StyledH3 } from "../../../components/common/text";
 import { useSignIn } from "../../../hooks/useSignIn";
-import { User } from "../../../interfaces/user.interface";
+import { Author } from "../../../interfaces/user.interface";
 
 const SignInPage = () => {
   const [email, setEmail] = useState("");
@@ -17,14 +17,21 @@ const SignInPage = () => {
   const { t } = useTranslation();
 
   const { mutate, isPending, isError, error } = useSignIn({
-    onSuccess: () => {
+    onSuccess: (data: any) => {
       //todo: check token return
-      navigate('/');
+      localStorage.setItem('token', data?.token)
+      console.log('received', data)
+      console.log('success')
+      console.log('navigating to home');
+      navigate('/home');
     },
-    onError: () => {
-      //todo: toast
+    onMutate: () => {
+      console.log('loggin in')
+      localStorage.clear()
+    },
+    onError: (error) => {
+      alert('error on login')
     }
-
   });
 
   const handleSubmit = (event: any) => {

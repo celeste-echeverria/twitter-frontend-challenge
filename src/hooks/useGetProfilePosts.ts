@@ -11,13 +11,13 @@ export const useGetProfilePosts = () => {
   const dispatch = useAppDispatch();
 
   const { data, isLoading, isError, error } = useCustomQuery<Post[]>({
-    path: `/posts/profile/${id}`,
+    endpoint: `/posts/profile/${id}`,
     queryKey: [`profilePosts${id}`] 
   });
 
   useEffect(() => {
     if (data) {
-      const updatedPosts = Array.from(new Set([...posts, ...data])).filter(
+      const updatedPosts = Array.from(new Set([...posts, ...data.data])).filter(
         (post) => post.authorId === id
       );
       dispatch(updateFeed(updatedPosts));

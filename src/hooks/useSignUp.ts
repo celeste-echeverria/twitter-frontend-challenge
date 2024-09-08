@@ -1,10 +1,18 @@
+import { useNavigate } from 'react-router-dom';
 import useCustomMutation, { UseMutationProps } from '../api/hooks/useCustomMutation';
 import { SignUpData } from '../interfaces/auth.interface';
 
-export const useSignUp = ({onError, onSuccess}: UseMutationProps) => {
+export const useSignUp = () => {
+  const navigate = useNavigate();
   return useCustomMutation<void, SignUpData> ({
-    mutation: 'auth/signup',
-    onSuccess,
-    onError
+    endpoint: 'auth/signup',
+    onSuccess: () => {
+      //todo: check token return
+      console.log('navigating to home');
+      navigate('/home');
+    },
+    onError: () => {
+      //todo: toast
+    }
   })
 }

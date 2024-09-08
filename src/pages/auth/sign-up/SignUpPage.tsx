@@ -17,7 +17,6 @@ import { authAxios } from "../../../api/axiosConfig";
 const SignUpPage = () => {
 
   const [data, setData] = useState<SignUpData>({name: '', username: '', email: '', password: '', confirmPassword: ''});
-  
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -28,15 +27,7 @@ const SignUpPage = () => {
 
   const { confirmPassword, ...requestData } = data;
 
-  const { mutate, isPending, isError, error } = useSignUp({
-    onSuccess: () => {
-      //todo: check token return
-      navigate('/');
-    },
-    onError: () => {
-      //todo: toast
-    }
-  });
+  const { mutate, isPending, isError, error } = useSignUp()
 
   const handleSubmit = (event: any) => {
     event.preventDefault();

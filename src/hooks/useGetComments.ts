@@ -13,13 +13,13 @@ export const useGetComments = ({ postId }: UseGetCommentsProps) => {
   const dispatch = useAppDispatch();
 
   const { data, isLoading, isError, error } = useCustomQuery<Post[]>({
-    path: `/post/comments/by_post/${postId}`,
+    endpoint: `/post/comments/by_post/${postId}`,
     queryKey: [`postComments${postId}`]
   })
 
   useEffect(() => {
     if(data){
-      const updatedPosts = Array.from(new Set([...posts, ...data])).filter(
+      const updatedPosts = Array.from(new Set([...posts, ...data.data])).filter(
         (post) => post.parentId === postId
       );
       dispatch(updateFeed(updatedPosts));

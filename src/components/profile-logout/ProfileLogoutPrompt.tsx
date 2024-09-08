@@ -7,7 +7,7 @@ import React, {useEffect, useState} from "react";
 import icon from "../../assets/icon.jpg";
 import {StyledP} from "../common/text";
 import {StyledContainer} from "../common/Container";
-import {User} from "../../interfaces/user.interface";
+import {Author} from "../../interfaces/user.interface";
 import { useGetMe } from "../../hooks/useGetMe";
 
 

@@ -1,12 +1,13 @@
 import {MutationKey, useMutation, useQueryClient} from '@tanstack/react-query'
 import { authAxios } from '../axiosConfig'
+import fetcher from './fetcher';
 
 type MutationProps <
-    TResultData = unknown,
+    TResultData = any,
     TBody = unknown, 
     TError = Error //TODO: revisar tipo de errores
 > = {
-    mutation: string;
+    endpoint: string;
     mutateFn?: (variables: TBody, dynamicPath?: string) => Promise<TResultData>;
     onMutate?: (body: TBody) => Promise<unknown | void> | unknown | void;
     onError?: (error?: TError) => Promise<unknown> | unknown;
@@ -25,18 +26,20 @@ function useCustomMutation<
     TBody = unknown,
     TError = Error //check
 >({
-    mutation,
+    endpoint,
     onSuccess,
     onMutate,
     onError,
-    method = 'POST'
+    method = 'POST',
 }: MutationProps<TResultData, TBody, TError>) {
 
     return useMutation<TResultData, TError, TBody>({
+
         mutationFn: async (body) => {
-            return authAxios(mutation, {
+            return await fetcher({
                 data: body,
-                method
+                method: method,
+                endpoint,
             })
         },
 

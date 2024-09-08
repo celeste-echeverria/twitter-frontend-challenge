@@ -16,7 +16,7 @@ import {StyledContainer} from "../common/Container";
 import {StyledIconContainer} from "./IconContainer";
 import {StyledNavItemsContainer} from "./navItem/NavItemsContainer";
 import {StyledP} from "../common/text";
-import {User} from "../../interfaces/user.interface";
+import {Author} from "../../interfaces/user.interface";
 import ProfileLogoutPrompt from "../profile-logout/ProfileLogoutPrompt";
 import { useGetMe } from "../../hooks/useGetMe";
 
@@ -33,6 +33,7 @@ const NavBar =  () => {
     if (window.innerWidth < 1265) {
       handleLogout();
     } else {
+      console.log('navigating to profile');
       navigate(`/profile/${user?.id}`);
     }
   };
@@ -51,15 +52,17 @@ const NavBar =  () => {
             <NavItem
                 title={t("navbar.home")}
                 onClick={() => {
-                  navigate("/");
+                  console.log('navigating to home');
+                  navigate("/home");
                 }}
                 icon={IconType.HOME}
                 selectedIcon={IconType.ACTIVE_HOME}
-                active={location.pathname === "/"}
+                active={location.pathname === "/home"}
             />
             <NavItem
                 title={t("navbar.profile")}
                 onClick={() => {
+                  console.log('navigating to profile');
                   navigate(`/profile/${user?.id}`);
                 }}
                 icon={IconType.PROFILE}

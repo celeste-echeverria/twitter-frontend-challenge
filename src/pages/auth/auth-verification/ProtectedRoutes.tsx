@@ -1,20 +1,20 @@
 import React from "react";
-import { Outlet, Navigate } from "react-router-dom";
-import { verifyAuth } from "../../../api/services/authService";
-
+import { Outlet, Navigate, useNavigate } from "react-router-dom";
+import { useVerifyAuth } from '../../../hooks/useVerifyAuth'
 interface ProtectedRoutesProps {
     redirectPath?: string;
 }
 
-const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({ redirectPath = '/sign-in'}) => {
-    const isAuth = verifyAuth();  
-
-    if (!isAuth){
-        return <Navigate to={redirectPath} replace />
-    }else{
+const ProtectedRoutes: React.FC<ProtectedRoutesProps> = () => {
+    const {data, isError, error} = useVerifyAuth();  
+    console.log("data", data, "iserror", isError, "error", error)
+    if(isError) {
+        console.log('navigating to sign in');
+        return <Navigate to="/sign-in"/>
+    }else {
+        console.log('outlet')
         return <Outlet/>
     }
-
     
 }
 
