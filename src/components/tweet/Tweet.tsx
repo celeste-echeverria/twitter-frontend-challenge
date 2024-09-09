@@ -5,7 +5,6 @@ import type {Author} from "../../interfaces/user.interface";
 import type {Post} from "../../interfaces/post.interface";
 import {StyledReactionsContainer} from "./ReactionsContainer";
 import Reaction from "./reaction/Reaction";
-import {createReaction, deleteReaction} from '../../api/services/reactionService'
 import {getPostById} from '../../api/services/postService'
 import {IconType} from "../icon/Icon";
 import {StyledContainer} from "../common/Container";
@@ -15,6 +14,7 @@ import ImageContainer from "./tweet-image/ImageContainer";
 import CommentModal from "../comment/comment-modal/CommentModal";
 import {useNavigate} from "react-router-dom";
 import { useGetMe } from "../../hooks/useGetMe";
+import { useCreateReaction } from "../../hooks/useCreateReaction";
 
 interface TweetProps {
   post: Post;
@@ -26,6 +26,11 @@ const Tweet = ({post}: TweetProps) => {
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  const {mutate: createReaction} = useCreateReaction({
+    postId: post.id
+    //onerror, onsuccess
+  });
+
   const {user, userIsLoading, userIsError, userError} = useGetMe()
 
   const getCountByType = (type: string): number => {
@@ -33,16 +38,7 @@ const Tweet = ({post}: TweetProps) => {
   };
 
   const handleReaction = async (type: string) => {
-    const reacted = actualPost.reactions.find(
-        (r) => r.type === type && r.userId === user?.id
-    );
-    if (reacted) {
-      await deleteReaction(reacted.id);
-    } else {
-      await createReaction(actualPost.id, type);
-    }
-    const newPost = await getPostById(post.id);
-    setActualPost(newPost);
+    createReaction({reactionType: type});
   };
 
   const hasReactedByType = (type: string): boolean => {

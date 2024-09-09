@@ -10,6 +10,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useFollowUser } from "../../hooks/useFollowUser";
 import { useUnfollowUser } from "../../hooks/useUnfollowUser";
 import { useGetUserProfile } from "../../hooks/useGetUserProfile";
+import { ToastType } from "../toast/Toast";
+import ToastPortal from "../toast/ToastPortal";
 
 interface FollowUserBoxProps {
   profilePicture?: string;
@@ -30,7 +32,7 @@ const FollowUserBox = ({
   const { profile, profileIsLoading } = useGetUserProfile(id);
   const {user, userIsLoading, userIsError, userError} = useGetMe()
 
-  const { mutate: unfollowUser, isPending: unfollowIsPending } = useUnfollowUser({
+  const { mutate: unfollowUser, isError: unfollowIsError, error: unfollowError, isSuccess: unfollowIsSuccess } = useUnfollowUser({
     userId: id,
     onError: () => {
       console.log('Error al dejar de seguir');
@@ -43,7 +45,7 @@ const FollowUserBox = ({
     }
   });
 
-  const { mutate: followUser, isPending: followIsPending } = useFollowUser({
+  const { mutate: followUser, isError: followIsError, error: followError, isSuccess: followIsSuccess } = useFollowUser({
     userId: id,
     onError: () => {
       console.log('Error al seguir');
@@ -78,6 +80,10 @@ const FollowUserBox = ({
             size={"SMALL"}
             onClick={handleFollow}
         />
+        {followIsError && <ToastPortal message={followError.message} type={ToastType.ERROR} />}
+        {followIsSuccess && <ToastPortal message={`Followed ${profile?.name}`} type={ToastType.SUCCESS} />} 
+        {unfollowIsError && <ToastPortal message={unfollowError.message} type={ToastType.ERROR} />}
+        {unfollowIsSuccess && <ToastPortal message={`Unfollowed ${profile?.name}`} type={ToastType.SUCCESS} />} 
       </div>
   );
 };

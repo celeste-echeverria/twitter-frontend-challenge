@@ -12,6 +12,8 @@ import { SignInData, SignUpData } from "../../../interfaces/auth.interface";
 import { useSignUp } from "../../../hooks/useSignUp";
 import { useMutation } from "@tanstack/react-query";
 import { authAxios } from "../../../api/axiosConfig";
+import ToastPortal from "../../../components/toast/ToastPortal";
+import { ToastType } from "../../../components/toast/Toast";
 
 
 const SignUpPage = () => {
@@ -27,7 +29,7 @@ const SignUpPage = () => {
 
   const { confirmPassword, ...requestData } = data;
 
-  const { mutate, isPending, isError, error } = useSignUp()
+  const { mutate, isSuccess, isError, error } = useSignUp()
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -97,6 +99,7 @@ const SignUpPage = () => {
           </div>
         </div>
       </div>
+      {isError && <ToastPortal message={error.message} type={ToastType.ERROR} />}
     </AuthWrapper>
   );
 };

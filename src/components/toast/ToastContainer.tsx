@@ -1,52 +1,29 @@
 import styled from "styled-components";
 import { ToastType } from "./Toast";
-import { Theme } from "../../util/LightTheme";
 
-interface ToastContainerProps {
+interface StyledToastContainerProps {
   type: ToastType;
-  theme: Theme;
 }
 
-export const StyledToastContainer = styled.div`
-  display: flex;
-  padding: 8px 16px;
-  align-items: center;
-  gap: 16px;
+export const StyledToastContainer = styled.div<StyledToastContainerProps>`
   position: fixed;
+  bottom: 20px; /* Posicionado en la parte inferior */
+  left: 50%; /* Centrando horizontalmente */
+  transform: translateX(-50%); /* Ajusta el elemento para estar perfectamente centrado */
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
   border-radius: 8px;
-  border: 1px solid
-    ${(props: ToastContainerProps) => {
-      switch (props.type) {
-        case ToastType.ALERT:
-          return props.theme.colors.errorContainer;
-        default:
-          return props.theme.colors.errorContainer;
-      }
-    }};
-  background: ${(props: ToastContainerProps) => props.theme.background};
+  background-color: ${({ type }) => 
+    type === "SUCCESS" ? "#DFF2BF" : "#FFBABA"}; /* Fondo más claro */
+  color: black; /* Letras negras */
+  z-index: 9999;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid black; /* Borde negro fino */
 
   p {
-    color: ${(props: ToastContainerProps) => {
-      switch (props.type) {
-        case ToastType.ALERT:
-          return props.theme.colors.errorContainer;
-        default:
-          return props.theme.colors.errorContainer;
-      }
-    }};
     margin: 0;
-    font-variant-numeric: lining-nums tabular-nums;
-    /* Body-2 */
-    font-family: ${({ theme }) => theme.font.default};
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 110%; /* 13.2px */
-    letter-spacing: -0.12px;
-  }
-  transition: 0.3s ease-in-out;
-  &:hover {
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    font-weight: bold;
   }
 `;
+

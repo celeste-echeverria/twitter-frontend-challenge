@@ -9,6 +9,9 @@ import { ButtonType } from "../../../components/button/StyledButton";
 import { StyledH3 } from "../../../components/common/text";
 import { useSignIn } from "../../../hooks/useSignIn";
 import { Author } from "../../../interfaces/user.interface";
+import { profile } from "console";
+import { ToastType } from "../../../components/toast/Toast";
+import ToastPortal from "../../../components/toast/ToastPortal";
 
 const SignInPage = () => {
   const [email, setEmail] = useState("");
@@ -16,22 +19,16 @@ const SignInPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { mutate, isPending, isError, error } = useSignIn({
+  const { mutate, isSuccess, isError, error } = useSignIn({
     onSuccess: (data: any) => {
-      //todo: check token return
       localStorage.setItem('token', data?.token)
-      console.log('received', data)
-      console.log('success')
-      console.log('navigating to home');
+
       navigate('/home');
     },
     onMutate: () => {
-      console.log('loggin in')
       localStorage.clear()
     },
-    onError: (error) => {
-      alert('error on login')
-    }
+
   });
 
   const handleSubmit = (event: any) => {
@@ -81,6 +78,8 @@ const SignInPage = () => {
           </div>
         </div>
       </div>
+      {isError && <ToastPortal message={error.message} type={ToastType.ERROR} />}
+       
     </AuthWrapper>
   );
 };

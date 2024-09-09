@@ -8,7 +8,6 @@ import HomePage from "../../pages/home-page/HomePage";
 import RecommendationPage from "../../pages/recommendation/RecommendationPage";
 import ProfilePage from "../../pages/profile/ProfilePage";
 import TweetPage from "../../pages/create-tweet-page/TweetPage";
-import CommentPage from "../../pages/create-comment-page/CommentPage";
 import PostPage from "../../pages/post-page/PostPage";
 import ProtectedRoutes from "../../pages/auth/auth-verification/ProtectedRoutes";
 import Chat from "../../pages/chat-page/Chat";
@@ -56,11 +55,6 @@ export const ROUTER = createBrowserRouter([
           {
             path: "/compose/tweet",
             element: <TweetPage />,
-          },
-          {
-            //todo check
-            path: "/post/:id",
-            element: <CommentPage />,
           },
           {
             path: "/chat/:id",

@@ -3,18 +3,6 @@ import { authAxios } from "../axiosConfig";
 import useCustomQuery from "../hooks/useCustomQuery";
 import { Author } from "../../interfaces/user.interface";
 
-export const getRecommendedUsers = async (limit: number, skip: number) => {
-  const res = await authAxios.get(`/user`, {
-    headers: {Authorization: 'Bearer ' + localStorage.getItem("token")},
-    params: {
-      
-      limit,
-      skip,
-    },
-  });
-  return res.data
-}
-
 //TODO: search abortcontroller and implement in user searches
 export const searchUsers = async (username: string, limit: number, skip: number, signal: AbortSignal) => {
   try {
@@ -36,20 +24,6 @@ export const searchUsers = async (username: string, limit: number, skip: number,
       console.error('Request failed:', error);
     }  
   }
-}
-
-export const getProfile = async (id: string) => {
-  const res = await authAxios.get(`/user`, {
-    params: {
-      userId: id
-    }
-  });
-  return res.data
-}
-
-export const getProfileView = async (id: string) => {
-  const res = await authAxios.get(`/user/${id}`);
-  return res.data
 }
 
 export const deleteProfile = async () => {

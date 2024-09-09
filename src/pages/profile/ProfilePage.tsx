@@ -14,6 +14,8 @@ import { useFollowUser } from "../../hooks/useFollowUser";
 import { useUnfollowUser } from "../../hooks/useUnfollowUser";
 import { useQueryClient } from "@tanstack/react-query";
 import { deleteProfile } from "../../api/services/userService";
+import { ToastType } from "../../components/toast/Toast";
+import ToastPortal from "../../components/toast/ToastPortal";
 
 const ProfilePage = () => {
   const queryClient = useQueryClient();
@@ -32,7 +34,13 @@ const ProfilePage = () => {
   const { user, userIsLoading } = useGetMe();
   const { profile, profileIsLoading } = useGetUserProfile(id);
 
-  const { mutate: followUser, isPending: followIsPending } = useFollowUser({
+  const { 
+    mutate: followUser, 
+    isPending: followIsPending, 
+    isError: followIsError, error: 
+    followError, 
+    isSuccess: followIsSuccess 
+  } = useFollowUser({
     userId: profile?.id,
     onError: () => {
       console.log('Error al seguir');
@@ -45,7 +53,13 @@ const ProfilePage = () => {
     }
   });
 
-  const { mutate: unfollowUser, isPending: unfollowIsPending } = useUnfollowUser({
+  const { 
+    mutate: unfollowUser, 
+    isPending: unfollowIsPending,
+    isError: unfollowIsError,
+    error: unfollowError,
+    isSuccess: unfollowIsSuccess 
+  } = useUnfollowUser({
     userId: profile?.id,
     onError: () => {
       console.log('Error al dejar de seguir');
@@ -187,6 +201,10 @@ const ProfilePage = () => {
           </>
         )}
       </StyledContainer>
+      {followIsError && <ToastPortal message={followError.message} type={ToastType.ERROR} />}
+      {followIsSuccess && <ToastPortal message={`Followed ${profile?.name}`} type={ToastType.SUCCESS} />} 
+      {unfollowIsError && <ToastPortal message={unfollowError.message} type={ToastType.ERROR} />}
+      {unfollowIsSuccess && <ToastPortal message={`Unfollowed ${profile?.name}`} type={ToastType.SUCCESS} />} 
     </>
   );
 };

@@ -18,6 +18,8 @@ export enum IconType {
   SETTINGS = "settings",
   DELETE = "delete",
   ALERT = "alert",
+  SUCCESS = "success",
+  ERROR = "error",
 }
 
 interface IconProps {
@@ -48,6 +50,8 @@ export const Icon = (props: IconProps) => {
     [IconType.SETTINGS]: <SettingsIcon {...props} />,
     [IconType.DELETE]: <DeleteIcon {...props} />,
     [IconType.ALERT]: <AlertIcon {...props} />,
+    [IconType.SUCCESS]: <SuccessIcon />,
+    [IconType.ERROR]: <ErrorIcon />,
   };
 };
 
@@ -553,3 +557,32 @@ export const AlertIcon = (props: IconProps) => {
     </svg>
   );
 };
+
+export const SuccessIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="green"
+    strokeWidth={2}
+    width="24"
+    height="24"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+  </svg>
+);
+
+export const ErrorIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="red"
+    strokeWidth={2}
+    width="24"
+    height="24"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
+
