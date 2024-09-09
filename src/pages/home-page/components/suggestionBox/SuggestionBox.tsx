@@ -1,19 +1,25 @@
-import React, { useEffect, useState } from "react";
-import FollowUserBox from "../../../../components/follow-user/FollowUserBox";
-import { getRecommendedUsers } from "../../../../api/services/userService";
 import { useTranslation } from "react-i18next";
-import { Author } from "../../../../interfaces/user.interface";
-import { StyledSuggestionBoxContainer } from "./SuggestionBoxContainer";
+import FollowUserBox from "../../../../components/follow-user/FollowUserBox";
 import { useGetRecommendations } from "../../../../hooks/useGetRecommendations";
+import { StyledSuggestionBoxContainer } from "./SuggestionBoxContainer";
+import Loader from "../../../../components/loader/Loader";
 
 const SuggestionBox = () => {
   const { t } = useTranslation();
 
-  const { users, isLoading, isError, error } = useGetRecommendations({page: 0});
+  const { users = [], isLoading, isError, error } = useGetRecommendations({ page: 0 });
 
   return (
     <StyledSuggestionBoxContainer>
       <h6>{t("suggestion.who-to-follow")}</h6>
+
+      {/* Mostrar mensaje de carga */}
+      {isLoading && <Loader/>}
+
+      {/* Manejar el error */}
+      {isError && <p>{t("suggestion.error-loading-recommendations")}</p>}
+
+      {/* Mostrar los usuarios si hay */}
       {users.length > 0 ? (
         users
           .filter((value, index, array) => {
@@ -30,8 +36,9 @@ const SuggestionBox = () => {
             />
           ))
       ) : (
-        <p>{t("suggestion.no-recommendations")}</p>
+        !isLoading && <p>{t("suggestion.no-recommendations")}</p> // No mostrar el mensaje si está cargando
       )}
+
       {users.length > 5 && (
         <a href="/recommendations">{t("suggestion.show-more")}</a>
       )}

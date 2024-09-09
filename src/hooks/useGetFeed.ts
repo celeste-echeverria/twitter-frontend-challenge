@@ -12,6 +12,7 @@ export const useGetFeed = () => {
     queryKey: ['FeedPosts'],
     params: {
       limit: LIMIT,
-    }
+    },
+    
   });
 };

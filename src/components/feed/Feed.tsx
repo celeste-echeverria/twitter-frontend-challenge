@@ -12,7 +12,7 @@ interface FeedProps {
 
 const Feed = ({ posts, loading }: FeedProps) => {
   return (
-    <StyledContainer width={"100%"} alignItems={"center"}>
+    <StyledContainer width={"100%"} alignItems={"center"} height={"auto"}>
       {loading && <Loader />}
       {posts.length > 0 && !loading ? (
         posts

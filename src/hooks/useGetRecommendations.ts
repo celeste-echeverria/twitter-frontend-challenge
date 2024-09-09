@@ -24,7 +24,7 @@ export const useGetRecommendations = ({ page }: UseGetRecommendationsProps) => {
         } else if (data) {
           setUsers((prev) => {
             const uniqueIds = new Set(prev.map((user) => user.id));
-            const filteredUsers = data.data.filter(
+            const filteredUsers = data.filter(
               (user: Author) => !uniqueIds.has(user.id)
             );
             return [...prev, ...filteredUsers];

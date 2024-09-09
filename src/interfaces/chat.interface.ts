@@ -1,20 +1,17 @@
 import {Author} from './user.interface'
 
-export interface MessageDTO {
-    id: string;
+export interface Message {
     content: string;
     createdAt: Date;
-    chatId: string;
     senderId: string;
-    sender: Author;
 }
   
 export interface ChatDTO {
     id: string;
     users: Author[];
-    messages: MessageDTO[];
+    messages: Message[];
 }
 
 export interface ChatHistory {
-    messages: MessageDTO[]
+    messages: Message[]
 }

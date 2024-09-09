@@ -30,7 +30,7 @@ const ProfilePage = () => {
   const { t } = useTranslation();
 
   const { user, userIsLoading } = useGetMe();
-  const { profile, profileIsLoading, refetch: refetchProfile } = useGetUserProfile(id);
+  const { profile, profileIsLoading } = useGetUserProfile(id);
 
   const { mutate: followUser, isPending: followIsPending } = useFollowUser({
     userId: profile?.id,
@@ -51,8 +51,10 @@ const ProfilePage = () => {
       console.log('Error al dejar de seguir');
     },
     onSuccess: () => {
-      // Refetchear el perfil después de dejar de seguir
-      refetchProfile();
+      queryClient.invalidateQueries({
+        queryKey: ['userProfile', profile.id],
+        refetchType: 'active',
+    })
     }
   });
 
@@ -151,7 +153,7 @@ const ProfilePage = () => {
                   />
                   <Button
                     onClick={handleSendMessage}
-                    disabled={profile.privacy && !profile.followedByActiveUser}
+                    disabled={(profile.id === user.id) || (profile.privacy && !profile.followedByActiveUser)}
                     buttonType={ButtonType.SEND_MESSAGE}
                     text={ "Chat"}
                     size={"100px"}
@@ -160,7 +162,7 @@ const ProfilePage = () => {
               </StyledContainer>
             </StyledContainer>
             <StyledContainer width={"100%"}>
-              {( profile.id === user.id || profile.followedByActiveUser) ? (
+              {( profile.id === user.id || profile.followedByActiveUser || !profile.privacy) ? (
                 <ProfileFeed userId={profile.id}/>
               ) : (
                 <StyledH5>This account is private</StyledH5>

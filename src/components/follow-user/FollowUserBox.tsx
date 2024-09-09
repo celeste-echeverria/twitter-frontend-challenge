@@ -1,12 +1,15 @@
 import React, {useEffect, useState} from "react";
 import Button from "../button/Button";
-import {unfollowUser, followUser} from "../../api/services/followService";
 import UserDataBox from "../user-data-box/UserDataBox";
 import {useTranslation} from "react-i18next";
 import {ButtonType} from "../button/StyledButton";
 import "./FollowUserBox.css";
 import {Author} from "../../interfaces/user.interface";
 import { useGetMe } from "../../hooks/useGetMe";
+import { useQueryClient } from "@tanstack/react-query";
+import { useFollowUser } from "../../hooks/useFollowUser";
+import { useUnfollowUser } from "../../hooks/useUnfollowUser";
+import { useGetUserProfile } from "../../hooks/useGetUserProfile";
 
 interface FollowUserBoxProps {
   profilePicture?: string;
@@ -22,20 +25,43 @@ const FollowUserBox = ({
     id,
   }: FollowUserBoxProps) => {
   const {t} = useTranslation();
+  const queryClient = useQueryClient();
 
-  const [isFollowing, setIsFollowing] = useState<boolean | undefined>(false);
-
+  const { profile, profileIsLoading } = useGetUserProfile(id);
   const {user, userIsLoading, userIsError, userError} = useGetMe()
 
-  setIsFollowing(user?.following.some((f: Author) => f.id === id))
+  const { mutate: unfollowUser, isPending: unfollowIsPending } = useUnfollowUser({
+    userId: id,
+    onError: () => {
+      console.log('Error al dejar de seguir');
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['userProfile', id],
+        refetchType: 'active',
+      })
+    }
+  });
+
+  const { mutate: followUser, isPending: followIsPending } = useFollowUser({
+    userId: id,
+    onError: () => {
+      console.log('Error al seguir');
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['userProfile', id],
+        refetchType: 'active',
+      })
+    }
+  });
 
   const handleFollow = async () => {
-    if (isFollowing) {
-      await unfollowUser(id);
+    if (profile?.followedByActiveUser) {
+      unfollowUser({ userId: id });
     } else {
-      await followUser(id);
+      followUser({ userId: id });
     }
-    setIsFollowing(!isFollowing);
   };
 
   return (
@@ -47,8 +73,8 @@ const FollowUserBox = ({
             username={username!}
         />
         <Button
-            text={isFollowing ? t("buttons.unfollow") : t("buttons.follow")}
-            buttonType={isFollowing ? ButtonType.DELETE : ButtonType.FOLLOW}
+            text={profile?.followedByActiveUser ? t("buttons.unfollow") : t("buttons.follow")}
+            buttonType={profile?.followedByActiveUser ? ButtonType.DELETE : ButtonType.FOLLOW}
             size={"SMALL"}
             onClick={handleFollow}
         />

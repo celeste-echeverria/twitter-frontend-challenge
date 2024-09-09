@@ -6,7 +6,7 @@ import Loader from '../../components/loader/Loader';
 import Icon from "../../assets/icon.jpg";
 import Avatar from '../../components/common/avatar/Avatar';
 import { useGetChat } from '../../hooks/useGetChat';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSendMessage } from '../../hooks/useSendMessage';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -15,11 +15,18 @@ const ChatPage = () => {
     const navigate = useNavigate()
     const [message, setMessage] = useState('');
     const queryClient = useQueryClient(); 
+    const messageEndRef = useRef<HTMLDivElement | null>(null);
 
     const {chatHistory, chatHistoryIsLoading, chatHistoryIsError, chatHistoryError} = useGetChat({userId: id})
     const {mutate: saveMessage, isError: saveMessageIsError} = useSendMessage({recipientId: id ?? ''})
 
     const {profile, profileIsLoading} = useGetUserProfile(id);
+
+    const scrollToBottom = () => {
+        if (messageEndRef.current) {
+            messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
 
     const redirectToProfile = () => {
         console.log('navigating to profile');
@@ -35,6 +42,7 @@ const ChatPage = () => {
                     })
                 }
                 setMessage(''); 
+                scrollToBottom(); 
             },
             onError: () => {
                 console.error('Error sending message');
@@ -42,6 +50,10 @@ const ChatPage = () => {
         });
 
     };
+
+    useEffect(() => {
+        scrollToBottom(); 
+    }, [chatHistory]);
 
     return (
         <StyledContainer
@@ -76,11 +88,40 @@ const ChatPage = () => {
                         {chatHistoryIsError && <p>Error loading messages</p>}
 
                         {chatHistory?.map((message: any) => (
-                            <div key={message.id} style={{ marginBottom: '10px' }}>
-                                <p><strong>{message.senderId === id ? profile?.name : 'You'}:</strong> {message.content}</p>
-                                <small>{new Date(message.createdAt).toLocaleTimeString()}</small>
+                            <div 
+                                key={message.id} 
+                                style={{ 
+                                    marginBottom: '10px', 
+                                    display: 'flex', 
+                                    justifyContent: message.senderId === id ? 'flex-start' : 'flex-end' 
+                                }}
+                            >
+                                <div 
+                                    style={{ 
+                                        display: 'flex', 
+                                        flexDirection: 'column', 
+                                        alignItems: message.senderId === id ? 'flex-start' : 'flex-end', 
+                                        maxWidth: '80%'
+                                    }}
+                                >
+                                    <p 
+                                        style={{ 
+                                            textAlign: message.senderId === id ? 'right' : 'left', 
+                                            wordBreak: 'break-word', 
+                                            overflowWrap: 'break-word', 
+                                            wordWrap: 'break-word' 
+                                        }}
+                                    >
+                                        <strong>{message.senderId === id ? profile.name : 'You'}:</strong> {message.content}
+                                    </p>
+                                    <small style={{ textAlign: message.senderId === id ? 'right' : 'left' }}>
+                                        {new Date(message.createdAt).toLocaleString("default", {dateStyle: "short", timeStyle: "short"})}
+                                    </small>
+                                </div>
                             </div>
                         ))}
+
+                        <div ref={messageEndRef} />
                     </StyledContainer>
                 </ChatBody>
 
