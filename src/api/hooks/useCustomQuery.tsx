@@ -30,7 +30,7 @@ function useCustomQuery<
     return useQuery({
         queryKey, 
         queryFn: async () => {
-            return await fetcher({
+            return await fetcher<TResultData>({
                 method: method,
                 endpoint,
                 params: params,

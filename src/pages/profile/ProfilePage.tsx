@@ -38,8 +38,10 @@ const ProfilePage = () => {
       console.log('Error al seguir');
     },
     onSuccess: () => {
-      // Refetchear el perfil después de seguir
-      refetchProfile();
+      queryClient.invalidateQueries({
+        queryKey: ['userProfile', profile.id],
+        refetchType: 'active',
+    })
     }
   });
 
@@ -88,6 +90,9 @@ const ProfilePage = () => {
     }
   };
 
+  const handleSendMessage = () => {
+    navigate(`/chat/${profile?.id}`);
+  }; 
   const handleButtonAction = async () => {
     if (profile?.id === user?.id) {
       setShowModal(true);
@@ -136,13 +141,22 @@ const ProfilePage = () => {
                   username={profile!.username}
                   profilePicture={profile!.profilePicture}
                 />
-                <Button
-                  disabled={followIsPending || unfollowIsPending}
-                  buttonType={handleButtonType().component}
-                  size={"100px"}
-                  onClick={handleButtonAction}
-                  text={handleButtonType().text}
-                />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <Button
+                    disabled={followIsPending || unfollowIsPending}
+                    buttonType={handleButtonType().component}
+                    size={"100px"}
+                    onClick={handleButtonAction}
+                    text={handleButtonType().text}
+                  />
+                  <Button
+                    onClick={handleSendMessage}
+                    disabled={profile.privacy && !profile.followedByActiveUser}
+                    buttonType={ButtonType.SEND_MESSAGE}
+                    text={ "Chat"}
+                    size={"100px"}
+                  />
+                </div>
               </StyledContainer>
             </StyledContainer>
             <StyledContainer width={"100%"}>

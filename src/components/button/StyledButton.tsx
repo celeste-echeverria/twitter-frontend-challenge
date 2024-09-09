@@ -11,6 +11,7 @@ export enum ButtonType {
   DELETE = "DELETE",
   OUTLINED = "OUTLINED",
   DISABLED = "DISABLED",
+  SEND_MESSAGE = "SEND_MESSAGE", 
 }
 export const StyledButton = styled.button<ButtonProps>`
     display: flex;
@@ -36,6 +37,8 @@ export const StyledButton = styled.button<ButtonProps>`
           return props.theme.colors.white;
         case "DISABLED":
           return props.theme.colors.light;
+        case "SEND_MESSAGE":
+          return props.theme.colors.black; 
         default:
           return props.theme.colors.main;
       }

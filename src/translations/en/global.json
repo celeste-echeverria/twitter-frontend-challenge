@@ -23,7 +23,8 @@
     "delete": "Delete",
     "unfollow": "Unfollow",
     "cancel": "Cancel",
-    "logout": "Log out"
+    "logout": "Log out",
+    "sendmessage": "Send message"
   },
   "placeholder": {
     "new-chat": "Start a new chat",

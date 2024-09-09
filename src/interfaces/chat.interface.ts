@@ -14,3 +14,7 @@ export interface ChatDTO {
     users: Author[];
     messages: MessageDTO[];
 }
+
+export interface ChatHistory {
+    messages: MessageDTO[]
+}
