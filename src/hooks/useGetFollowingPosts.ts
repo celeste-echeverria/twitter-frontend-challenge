@@ -6,10 +6,10 @@ import { Page, Post } from "../interfaces/post.interface";
 import useInfiniteCustomQuery from "../api/hooks/useInfiniteQuery";
 import { LIMIT } from "../util/Constants";
 
-export const useGetFeed = () => {
+export const useGetFollowingPosts = () => {
   return useInfiniteCustomQuery<Page[]>({
-    endpoint: `/post`,
-    queryKey: ['FeedPosts'],
+    endpoint: `/post/following`,
+    queryKey: ['FollowingPosts'],
     params: {
       limit: LIMIT,
     }

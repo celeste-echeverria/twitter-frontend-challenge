@@ -5,33 +5,25 @@ import { getPosts } from "../../../../../api/services/postService";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { StyledTabBarContainer } from "./TabBarContainer";
+import { useFeedContext } from "../../../FeedContext";
 
 const TabBar = () => {
-  const [activeFirstPage, setActiveFirstPage] = useState(true);
-  const dispatch = useAppDispatch();
-  const { t } = useTranslation();
+  const { selectedFeed, setSelectedFeed } = useFeedContext();
 
-  const handleClick = async (value: boolean, query: string) => {
-    setActiveFirstPage(value);
-    dispatch(setQuery(query));
-    const data = await getPosts(query).catch((e) => {
-      console.log(e);
-    });
-    dispatch(updateFeed(data));
-  };
+  const { t } = useTranslation();
 
   return (
     <>
       <StyledTabBarContainer>
         <Tab
-          active={activeFirstPage}
+          active={selectedFeed === 'forYou'}
           text={t("header.for-you")}
-          onClick={() => handleClick(true, "")}
+          onClick={() => setSelectedFeed('forYou')} // Cambia el estado al feed de "For You"
         />
         <Tab
-          active={!activeFirstPage}
+          active={selectedFeed === 'following'}
           text={t("header.following")}
-          onClick={() => handleClick(false, "following")}
+          onClick={() => setSelectedFeed('following')} // Cambia el estado al feed de "Following"
         />
       </StyledTabBarContainer>
     </>

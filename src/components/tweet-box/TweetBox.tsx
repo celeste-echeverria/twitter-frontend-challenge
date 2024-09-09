@@ -34,7 +34,6 @@ const TweetBox: React.FC<TweetBoxProps> = ({parentId, close, mobile}: TweetBoxPr
     const {t} = useTranslation();
 
     const {user, userIsLoading, userIsError, userError} = useGetMe();
-    const {posts, postsIsLoading, postsIsError, postsError} = useGetFeed()
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setContent(e.target.value);
@@ -46,7 +45,7 @@ const TweetBox: React.FC<TweetBoxProps> = ({parentId, close, mobile}: TweetBoxPr
             setImages([]);
             setImagesPreview([]);
             dispatch(setLength(length + 1));
-            dispatch(updateFeed(posts));
+            //dispatch(updateFeed(posts));
             close && close();
         } catch (e) {
             console.log(e);

@@ -34,10 +34,7 @@ const ProfileFeed = ({ userId }: { userId: string }) => {
         })}
         <div > 
           {isFetchingNextPage 
-            ? <Loader/> 
-            : hasNextPage
-              ? 'Load More'
-              : 'Nothing more to load'
+            ? <Loader/> : <></>
           } 
         </div>
       </div>

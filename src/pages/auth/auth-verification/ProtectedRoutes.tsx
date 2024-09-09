@@ -6,13 +6,12 @@ interface ProtectedRoutesProps {
 }
 
 const ProtectedRoutes: React.FC<ProtectedRoutesProps> = () => {
-    const {data, isError, error} = useVerifyAuth();  
-    console.log("data", data, "iserror", isError, "error", error)
+    const {isError, error} = useVerifyAuth();  
+
     if(isError) {
         console.log('navigating to sign in');
         return <Navigate to="/sign-in"/>
     }else {
-        console.log('outlet')
         return <Outlet/>
     }
     

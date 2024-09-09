@@ -48,6 +48,7 @@ async function fetcher<
     
   } catch (error) {
     if (error instanceof AxiosError) {
+      console.log(error)
         throw new Error(error.response?.data?.message || 'Error fetching data');
     }
     throw new Error('Unexpected error');

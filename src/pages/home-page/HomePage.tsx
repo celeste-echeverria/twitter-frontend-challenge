@@ -8,35 +8,19 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { StyledUserSuggestionContainer } from "./UserSeuggestionContainer";
 import { useGetFeed } from "../../hooks/useGetFeed";
 import { Post } from "../../interfaces/post.interface";
+import { FeedProvider } from "./FeedContext";
 
 const HomePage = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const query = useAppSelector((state) => state.user.query);
-
-  const {posts, postsIsLoading, postsIsError, postsError} = useGetFeed()
-
-  const handleSetUser = async () => {
-    try {
-      if(posts)
-      dispatch(updateFeed(posts));
-    } catch (e) {
-      console.log('error in home page handlesetuser', e);
-      //navigate("/sign-in");
-    }
-  };
-
-  useEffect(() => {
-    handleSetUser().then();
-  }, []);
-
+ 
   return (
     <>
-      <ContentContainer />
-      <StyledUserSuggestionContainer>
-        <SearchBar />
-        <SuggestionBox />
-      </StyledUserSuggestionContainer>
+      <FeedProvider>
+        <ContentContainer />
+        <StyledUserSuggestionContainer>
+          <SearchBar />
+          <SuggestionBox />
+        </StyledUserSuggestionContainer>
+      </FeedProvider>
     </>
   );
 };

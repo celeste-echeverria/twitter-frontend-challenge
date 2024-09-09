@@ -10,8 +10,8 @@ const usePageBottom = () => {
       const scrollTop = document.documentElement.scrollTop;
 
       const hasReachedBottom = offsetHeight - (innerHeight + scrollTop) <= 10;
-        console.log('BOTTOM?????', hasReachedBottom)
       setReachedBottom(hasReachedBottom);
+      
     };
 
     window.addEventListener("scroll", handleScroll);

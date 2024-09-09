@@ -22,9 +22,7 @@ const Feed = ({ posts, loading }: FeedProps) => {
         .map((post: Post) => (
           <Tweet key={post.id} post={post} />
         )))
-        : (
-          <p>No posts</p>
-        )
+        : <></>
       }
     </StyledContainer>
   );
