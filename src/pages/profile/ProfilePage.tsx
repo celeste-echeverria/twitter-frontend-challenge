@@ -106,9 +106,6 @@ const ProfilePage = () => {
     }
   };
 
-  const handleSendMessage = () => {
-    navigate(`/chat/${profile?.id}`);
-  }; 
   const handleButtonAction = async () => {
     if (profile?.id === user?.id) {
       setShowModal(true);
@@ -164,13 +161,6 @@ const ProfilePage = () => {
                     size={"100px"}
                     onClick={handleButtonAction}
                     text={handleButtonType().text}
-                  />
-                  <Button
-                    onClick={handleSendMessage}
-                    disabled={(profile.id === user.id) || (profile.privacy && !profile.followedByActiveUser)}
-                    buttonType={ButtonType.SEND_MESSAGE}
-                    text={ "Chat"}
-                    size={"100px"}
                   />
                 </div>
               </StyledContainer>
