@@ -58,7 +58,7 @@
     "logout": "Siempre puedes volver a iniciar sesión en cualquier momento."
   },
   "title": {
-    "login": "Ingresa tu correo electrónico o @nombre_de_usuario.",
+    "login": "Ingresa tu correo electrónico y contraseña",
     "register": "Crea tu cuenta"
   }
 }

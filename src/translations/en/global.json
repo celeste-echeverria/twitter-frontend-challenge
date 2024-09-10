@@ -56,7 +56,7 @@
     "logout": "You can always log back in at any time."
   },
   "title": {
-    "login": "Enter your email or username",
+    "login": "Enter your email and password",
     "register": "Create your account"
   }
 }
