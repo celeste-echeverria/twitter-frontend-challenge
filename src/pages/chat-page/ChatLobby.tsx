@@ -26,8 +26,7 @@ const ChatLobby: React.FC = () => {
     const {data: me} = useGetMe()
 
     useEffect(() => {
-        const url = (process.env.REACT_APP_API_URL_WS ?? '');
-        const webSocket = io(url, {
+        const webSocket = io('ws://localhost:8080', {
         extraHeaders: {
             authorization: localStorage.getItem('token') || '',
         },
