@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { StyledContainer } from '../../components/common/Container';
-import { ChatContainer, ChatHeader, UserDetails, UserName, ChatBody, MessageInputContainer, MessageInput, SendMessageButton, UserUsername } from './ChatComponents';
+import { ChatContainer, ChatHeader, UserDetails, UserName, ChatBody, MessageInputContainer, MessageInput, SendMessageButton, UserUsername } from './components/ChatComponents';
 import { useGetUserProfile } from '../../hooks/useGetUserProfile';
 import Loader from '../../components/loader/Loader';
 import Icon from "../../assets/icon.jpg";
@@ -9,6 +9,9 @@ import { useGetChat } from '../../hooks/useGetChat';
 import { useEffect, useRef, useState } from 'react';
 import { useSendMessage } from '../../hooks/useSendMessage';
 import { useQueryClient } from '@tanstack/react-query';
+import { Socket, io } from "socket.io-client";
+import { Icon as IconObj, IconType } from '../../components/icon/Icon';
+
 
 const ChatPage = () => {
     const id = useParams().id;
@@ -50,10 +53,14 @@ const ChatPage = () => {
         });
 
     };
+    const goBack = () => {
+        navigate('/chat'); // Redirige a /chat
+    };
 
     useEffect(() => {
         scrollToBottom(); 
     }, [chatHistory]);
+
 
     return (
         <StyledContainer
@@ -64,26 +71,36 @@ const ChatPage = () => {
             {profileIsLoading && <Loader/>}
             <ChatContainer>
                 {profile &&
-                <ChatHeader>
-                    <UserDetails>
-                    <Avatar
-                        src={profile.profilePicture === null ? Icon : profile.profilePicture!}
-                        alt={profile.name}
-                        onClick={redirectToProfile}
-                    />
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                        <UserName>{profile.name}</UserName>
-                        <UserUsername>@{profile.username}</UserUsername>
-                    </div>
-
-                    </UserDetails>
-                    
-                </ChatHeader>
+               <ChatHeader>
+               <UserDetails>
+                 <button onClick={goBack} style={{ marginRight: '10px', background: 'none', border: 'none', cursor: 'pointer' }}>
+                    <svg
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                        height="1em"
+                        width="1em"
+                    >
+                        <path
+                            fillRule="evenodd"
+                            d="M1.146 4.854a.5.5 0 010-.708l4-4a.5.5 0 11.708.708L2.707 4H12.5A2.5 2.5 0 0115 6.5v8a.5.5 0 01-1 0v-8A1.5 1.5 0 0012.5 5H2.707l3.147 3.146a.5.5 0 11-.708.708l-4-4z"
+                        />
+                    </svg>
+                 </button>
+                 <Avatar
+                   src={profile.profilePicture === null ? Icon : profile.profilePicture!}
+                   alt={profile.name}
+                   onClick={redirectToProfile}
+                 />
+                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}> {/* Reducir gap */}
+                   <UserName>{profile.name}</UserName>
+                   <UserUsername>@{profile.username}</UserUsername>
+                 </div>
+               </UserDetails>
+             </ChatHeader>
                 }
 
                 <ChatBody>
                     <StyledContainer>
-                        {/* Mostrar mensajes */}
                         {chatHistoryIsLoading && <p>Loading messages...</p>}
                         {chatHistoryIsError && <p>Error loading messages</p>}
 

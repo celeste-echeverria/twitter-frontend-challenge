@@ -27,7 +27,7 @@ const NavBar =  () => {
   const [logoutOpen, setLogoutOpen] = useState(false);
   const {t} = useTranslation();
 
-  const {user, userIsLoading, userIsError, userError} = useGetMe()
+  const {data: user, isLoading: userIsLoading, isError: userIsError, error: userError} = useGetMe()
   
   const handleAvatarClick = () => {
     if (window.innerWidth < 1265) {
@@ -68,6 +68,16 @@ const NavBar =  () => {
                 icon={IconType.PROFILE}
                 selectedIcon={IconType.ACTIVE_PROFILE}
                 active={location.pathname === `/profile/${user?.id}`}
+            />
+            <NavItem
+                title={t("chat")}
+                onClick={() => {
+                  console.log('navigating to chat');
+                  navigate("/chat");
+                }}
+                icon={IconType.CHAT}
+                selectedIcon={IconType.CHAT}
+                active={location.pathname === "/chat"}
             />
             <StyledTweetButton
                 onClick={() => navigate("/compose/tweet")

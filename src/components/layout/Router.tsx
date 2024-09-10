@@ -10,7 +10,8 @@ import ProfilePage from "../../pages/profile/ProfilePage";
 import TweetPage from "../../pages/create-tweet-page/TweetPage";
 import PostPage from "../../pages/post-page/PostPage";
 import ProtectedRoutes from "../../pages/auth/auth-verification/ProtectedRoutes";
-import Chat from "../../pages/chat-page/Chat";
+import ChatLobby from "../../pages/chat-page/ChatLobby";
+import ChatRoom from "../../pages/chat-page/ChatRoom2";
 
 const WithNav = () => {
   return (
@@ -57,8 +58,12 @@ export const ROUTER = createBrowserRouter([
             element: <TweetPage />,
           },
           {
+            path: "/chat",
+            element: <ChatLobby />,
+          },
+          {
             path: "/chat/:id",
-            element: <Chat />,
+            element: <ChatRoom />,
           }
         ],
       }

@@ -21,6 +21,7 @@ const Reaction = ({
 
   const handleReaction = async () => {
     try {
+      console.log('reaction function called')
       await reactionFunction();
       setReactionCount(
         reactionReacted ? reactionCount - increment : reactionCount + 1

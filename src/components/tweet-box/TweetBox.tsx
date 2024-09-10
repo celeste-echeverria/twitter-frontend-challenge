@@ -40,7 +40,7 @@ const TweetBox: React.FC<TweetBoxProps> = ({parentId, close, mobile}: TweetBoxPr
     const dispatch = useDispatch();
     const {t} = useTranslation();
 
-    const {user, userIsLoading, userIsError, userError} = useGetMe();
+    const {data: user, isLoading: userIsLoading, isError: userIsError, error: userError} = useGetMe();
     const {mutate: createTweet, isError: tweetIsError, error: tweetError, isSuccess: tweetIsSuccess} = useTweet({
         onSuccess: () => {
             queryClient.invalidateQueries({

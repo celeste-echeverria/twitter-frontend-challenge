@@ -30,7 +30,7 @@ const FollowUserBox = ({
   const queryClient = useQueryClient();
 
   const { profile, profileIsLoading } = useGetUserProfile(id);
-  const {user, userIsLoading, userIsError, userError} = useGetMe()
+  const {data: user, isLoading: userIsLoading, isError: userIsError, error: userError} = useGetMe()
 
   const { mutate: unfollowUser, isError: unfollowIsError, error: unfollowError, isSuccess: unfollowIsSuccess } = useUnfollowUser({
     userId: id,

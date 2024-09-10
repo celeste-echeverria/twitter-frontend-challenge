@@ -5,10 +5,9 @@ import { Author } from "../interfaces/user.interface";
 
 export const useGetMe = () => {
 
-  const { data, isLoading, isError, error } = useCustomQuery<Author>({
+  return useCustomQuery<Author>({
     endpoint: '/user/me', 
     queryKey: ['me']
   });
-  return {user: data, userIsLoading: isLoading, userIsError: isError, userError: error}
   
 }

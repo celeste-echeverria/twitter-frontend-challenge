@@ -22,7 +22,7 @@ const LogoutPrompt = ({ show }: LogoutPromptProps) => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
-  const {user, userIsLoading, userIsError, userError} = useGetMe()
+  const {data: user, isLoading: userIsLoading, isError: userIsError, error: userError} = useGetMe()
 
   const handleClick = () => {
     setShowModal(true);

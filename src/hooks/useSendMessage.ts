@@ -17,6 +17,7 @@ export const useSendMessage = ({onError, onSuccess, recipientId}: UseSendMessage
         },
         onError
     })
+    //todo socket
 }
 
 

@@ -1,4 +1,4 @@
-import {Author} from './user.interface'
+import {Author, UserView} from './user.interface'
 
 export interface Message {
     content: string;
@@ -6,10 +6,11 @@ export interface Message {
     senderId: string;
 }
   
-export interface ChatDTO {
+export interface Room {
     id: string;
-    users: Author[];
+    users: UserView[];
     messages: Message[];
+    createdAt: Date;
 }
 
 export interface ChatHistory {

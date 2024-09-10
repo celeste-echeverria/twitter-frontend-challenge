@@ -31,7 +31,7 @@ const ProfilePage = () => {
   const id = useParams().id;
   const { t } = useTranslation();
 
-  const { user, userIsLoading } = useGetMe();
+  const { data: user, isLoading: userIsLoading } = useGetMe();
   const { profile, profileIsLoading } = useGetUserProfile(id);
 
   const { 

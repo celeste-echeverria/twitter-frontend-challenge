@@ -5,6 +5,7 @@ import usePageBottom from "../../hooks/useReachBottom";
 import Loader from "../loader/Loader";
 import { useSelector } from "react-redux";
 import { useGetFollowingPosts } from "../../hooks/useGetFollowingPosts";
+import { ExtendedPost } from "../../interfaces/post.interface";
 
 const FollowingFeed = () => {
     
@@ -26,7 +27,8 @@ const FollowingFeed = () => {
         <>
             <div style={{overflowY: 'auto'}}>
               {data?.pages.map((group, index: any) => {
-                return <Feed posts={group.posts} loading={isLoading} key={index}/>
+                const posts = group.posts as ExtendedPost[];
+                return <Feed posts={posts} loading={isLoading} key={index}/>
               })}
               <div > 
                 {isFetchingNextPage 

@@ -6,7 +6,7 @@ interface CommentFeedProps {
   postId: string;
 }
 const CommentFeed = ({ postId }: CommentFeedProps) => {
-  const { posts, isLoading, isError, error } = useGetComments({
+  const { data: posts, isLoading, isError, error } = useGetComments({
     postId,
   });
 

@@ -19,7 +19,7 @@ interface ProfileLogoutPromptProps {
 const ProfileLogoutPrompt = ({margin, direction}: ProfileLogoutPromptProps) => {
     const [logoutOpen, setLogoutOpen] = useState(false);
 
-    const {user, userIsLoading, userIsError, userError} = useGetMe()
+    const {data: user, isLoading: userIsLoading, isError: userIsError, error: userError} = useGetMe()
 
     const handleLogout = () => {
         setLogoutOpen(!logoutOpen);

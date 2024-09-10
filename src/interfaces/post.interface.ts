@@ -17,6 +17,13 @@ export interface Post {
     author: Author;
     reactions: Reaction[];
     comments: Post[];
+
+}
+
+export interface ExtendedPost extends Post {
+    qtyComments: number
+    qtyLikes: number
+    qtyRetweets: number
 }
   
 export type TPage = {
@@ -27,5 +34,5 @@ export type TPage = {
 export interface Page {
     hasMore: boolean,
     nextCursor: string | null,
-    posts: Post[];
+    posts: ExtendedPost[];
 }

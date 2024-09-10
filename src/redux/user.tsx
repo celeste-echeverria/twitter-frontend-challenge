@@ -1,13 +1,13 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {LIMIT} from "../util/Constants";
-import {ChatDTO} from "../interfaces/chat.interface";
+import {Room} from "../interfaces/chat.interface";
 import {Post} from "../interfaces/post.interface";
 
 type InitalStateType = {
   feed: Post[];
   query: string;
   length: number;
-  currentChat?: ChatDTO;
+  currentChat?: Room;
 };
 
 const initialState: InitalStateType = {

@@ -7,24 +7,16 @@ import TweetBox from "../../components/tweet-box/TweetBox";
 import Tweet from "../../components/tweet/Tweet";
 import { StyledFeedContainer } from "../home-page/components/contentContainer/FeedContainer";
 import { getPostById } from "../../api/services/postService";
-import { Post } from "../../interfaces/post.interface";
+import { ExtendedPost, Post } from "../../interfaces/post.interface";
+import { useGetPost } from "../../hooks/useGetPost";
 
 const PostPage: React.FC = () => {
 
     const [postId, setPostId] = useState<string>(window.location.href.split("/")[4])
-    const [post, setPost] = useState<Post | undefined>(undefined)
-   
-    const fetchPost = async () => {
-      try {
-          setPost(await getPostById(postId));
-      } catch (error) {
-          console.log(error);
-      }
-    };
-    
-    useEffect(() => {
-        fetchPost();
-    }, [postId]);
+
+    const {data: post, isLoading: postIsLoading, isError: PostIsERror, error: PostError} = useGetPost({
+      postId: postId,
+    })
     
     return (
         <StyledContainer borderRight={"1px solid #ebeef0"}>
@@ -38,7 +30,7 @@ const PostPage: React.FC = () => {
           <StyledFeedContainer>
             {post ? (
               <>
-                <Tweet post={post} />
+                <Tweet actualPost={post} />
                 <StyledContainer
                   borderBottom={"1px solid #ebeef0"}
                   padding={"16px"}
