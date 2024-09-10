@@ -13,6 +13,7 @@ import {QueryClient} from '@tanstack/react-query'
 import useDebounce from "../../hooks/useDebounce";
 
 export const SearchBar = () => {
+  const [showResultsModal, setShowResultsModal] = useState<boolean>(false);
   const [results, setResults] = useState<UserView[]>([]);
   const [query, setQuery] = useState<string>("");
   const debouncedSearch = useDebounce(query.trim(), 500);
@@ -38,20 +39,23 @@ export const SearchBar = () => {
         placeholder={t("placeholder.search")}
       />
       <StyledContainer style={{ width: "100%" }}>
-          <StyledSearchResultModalContainer>
-            {searchIsLoading && <Loader />}
-            {(!results.length && !searchIsLoading && <div>No results</div>) ||
-              results.map((author) => (
-                <UserDataBox
-                  key={"search-result-" + author.id}
-                  username={author.username}
-                  name={author.name!}
-                  id={author.id}
-                  profilePicture={author.profilePicture!}
-                />
-              ))
-            }
-          </StyledSearchResultModalContainer>
+          {query.trim() && 
+            <StyledSearchResultModalContainer>
+              {searchIsLoading && <Loader />}
+              {(results && results.length == 0 && !searchIsLoading && <div>No users found</div>)}
+              {
+                results.map((author) => (
+                  <UserDataBox
+                    key={"search-result-" + author.id}
+                    username={author.username}
+                    name={author.name!}
+                    id={author.id}
+                    profilePicture={author.profilePicture!}
+                  />
+                ))
+              }
+            </StyledSearchResultModalContainer>
+          }
         </StyledContainer>
     </StyledSearchBarContainer>
   );
