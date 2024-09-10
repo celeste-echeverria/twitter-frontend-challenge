@@ -38,6 +38,10 @@ export const ROUTER = createBrowserRouter([
         element: <WithNav />,
         children: [
           {
+            path: "/",
+            element: <HomePage />,
+          },
+          {
             path: "/home",
             element: <HomePage />,
           },
