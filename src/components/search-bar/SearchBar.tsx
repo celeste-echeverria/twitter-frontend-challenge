@@ -1,34 +1,33 @@
-import React, { ChangeEvent, useRef, useState } from "react";
-import SearchResultModal from "./search-result-modal/SearchResultModal";
-import { Author } from "../../interfaces/user.interface";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import { Author, UserView } from "../../interfaces/user.interface";
 import { searchUsers } from "../../api/services/userService";
 import { useTranslation } from "react-i18next";
 import { StyledSearchBarContainer } from "./SearchBarContainer";
 import { StyledSearchBarInput } from "./SearchBarInput";
+import { useGetSearchUsers } from "../../hooks/useGetSearchUsers";
+import { StyledContainer } from "../common/Container";
+import { StyledSearchResultModalContainer } from "./search-result-modal/SearchResultModalContainer";
+import UserDataBox from "../user-data-box/UserDataBox";
+import Loader from "../loader/Loader";
+import {QueryClient} from '@tanstack/react-query'
+import useDebounce from "../../hooks/useDebounce";
 
 export const SearchBar = () => {
-  const [results, setResults] = useState<Author[]>([]);
+  const [results, setResults] = useState<UserView[]>([]);
   const [query, setQuery] = useState<string>("");
-  let debounceTimer: NodeJS.Timeout;
+  const debouncedSearch = useDebounce(query.trim(), 500);
   const { t } = useTranslation();
-  const abortController = useRef<AbortController | null>(null);
 
+  const {data: users, isLoading: searchIsLoading} = useGetSearchUsers({query: debouncedSearch});
+
+  useEffect(() => {
+    if (users) {
+      setResults(users);
+    }
+  }, [users]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputQuery = e.target.value;
-
-    setQuery(inputQuery);
-    const newAbortController = new AbortController();
-    abortController.current = newAbortController;
-
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(async () => {
-      try {
-        setResults(await searchUsers(inputQuery, 4, 0, newAbortController.signal));
-      } catch (error) {
-        console.log(error);
-      }
-    }, 300);
+    setQuery(e.target.value);
   };
 
   return (
@@ -38,7 +37,22 @@ export const SearchBar = () => {
         value={query}
         placeholder={t("placeholder.search")}
       />
-      <SearchResultModal show={query.length > 0} results={results} />
+      <StyledContainer style={{ width: "100%" }}>
+          <StyledSearchResultModalContainer>
+            {searchIsLoading && <Loader />}
+            {(!results.length && !searchIsLoading && <div>No results</div>) ||
+              results.map((author) => (
+                <UserDataBox
+                  key={"search-result-" + author.id}
+                  username={author.username}
+                  name={author.name!}
+                  id={author.id}
+                  profilePicture={author.profilePicture!}
+                />
+              ))
+            }
+          </StyledSearchResultModalContainer>
+        </StyledContainer>
     </StyledSearchBarContainer>
   );
 };

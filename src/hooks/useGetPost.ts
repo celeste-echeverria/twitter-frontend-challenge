@@ -6,7 +6,7 @@ interface UseGetPostProps {
 }
 export const useGetPost = ({postId}: UseGetPostProps) => {
   return useCustomQuery<Post[]>({
-    endpoint: `/post/:${postId}`,
+    endpoint: `/post/${postId}`,
     queryKey: ['Post', postId],
   });
 };

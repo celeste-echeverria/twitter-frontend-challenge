@@ -14,7 +14,7 @@ const Feed = ({ posts, loading }: FeedProps) => {
   return (
     <StyledContainer width={"100%"} alignItems={"center"} height={"auto"}>
       {loading && <Loader />}
-      {posts.length > 0 && !loading ? (
+      {posts && !loading ? (
         posts
         .filter((post, index, self) => {
           return self.findIndex((p) => p.id === post.id) === index;

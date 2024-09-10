@@ -13,6 +13,5 @@ export const useGetFeed = () => {
     params: {
       limit: LIMIT,
     },
-    
   });
 };

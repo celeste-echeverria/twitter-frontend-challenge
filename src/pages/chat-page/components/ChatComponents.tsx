@@ -69,7 +69,6 @@ export const MessageContainer = styled.div<{ isOwnMessage: boolean }>`
   flex-direction: column;
 `;
 
-
 export const MessageInput = styled.input`
   flex: 1;
   padding: 10px;
