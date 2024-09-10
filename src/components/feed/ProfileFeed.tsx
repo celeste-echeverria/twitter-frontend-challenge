@@ -29,6 +29,7 @@ const ProfileFeed = ({ userId }: { userId: string }) => {
   return (
     <>
       <div style={{overflowY: 'auto'}}>
+        {data?.pages[0].posts.length == 0 && <div style={{ marginTop: '10px' }}>No posts</div>}
         {data?.pages.map((group, index: any) => {
           const posts = group.posts as ExtendedPost[];
           return <Feed posts={posts} loading={isLoading} key={index}/>

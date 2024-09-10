@@ -175,11 +175,11 @@ const ProfilePage = () => {
                 </div>
               </StyledContainer>
             </StyledContainer>
-            <StyledContainer width={"100%"}>
+            <StyledContainer width={"100%"} style={{ textAlign: 'center' }}>
               {( profile.id === user.id || profile.followedByActiveUser || !profile.privacy) ? (
                 <ProfileFeed userId={profile.id}/>
               ) : (
-                <StyledH5>This account is private</StyledH5>
+                <div style={{ marginTop: '10px' }}>This account is private</div>
               )}
             </StyledContainer>
             <Modal
