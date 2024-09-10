@@ -5,7 +5,6 @@ import type {Author} from "../../interfaces/user.interface";
 import type {ExtendedPost, Post} from "../../interfaces/post.interface";
 import {StyledReactionsContainer} from "./ReactionsContainer";
 import type {Reaction as ReactionType} from "../../interfaces/reaction.interface";
-import {getPostById} from '../../api/services/postService'
 import {IconType} from "../icon/Icon";
 import {StyledContainer} from "../common/Container";
 import ThreeDots from "../common/ThreeDots";

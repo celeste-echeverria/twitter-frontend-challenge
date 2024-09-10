@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Author, UserView } from "../interfaces/user.interface";
-import { searchUsers } from "../api/services/userService";
 import { LIMIT } from "../util/Constants";
 import useCustomQuery from "../api/hooks/useCustomQuery";
 

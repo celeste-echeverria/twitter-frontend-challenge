@@ -6,7 +6,6 @@ import Loader from "../../components/loader/Loader";
 import TweetBox from "../../components/tweet-box/TweetBox";
 import Tweet from "../../components/tweet/Tweet";
 import { StyledFeedContainer } from "../home-page/components/contentContainer/FeedContainer";
-import { getPostById } from "../../api/services/postService";
 import { ExtendedPost, Post } from "../../interfaces/post.interface";
 import { useGetPost } from "../../hooks/useGetPost";
 

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Tab from "./tab/Tab";
 import { setQuery, updateFeed } from "../../../../../redux/user";
-import { getPosts } from "../../../../../api/services/postService";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { StyledTabBarContainer } from "./TabBarContainer";

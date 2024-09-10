@@ -13,9 +13,9 @@ import { useGetUserProfile } from "../../hooks/useGetUserProfile";
 import { useFollowUser } from "../../hooks/useFollowUser";
 import { useUnfollowUser } from "../../hooks/useUnfollowUser";
 import { useQueryClient } from "@tanstack/react-query";
-import { deleteProfile } from "../../api/services/userService";
 import { ToastType } from "../../components/toast/Toast";
 import ToastPortal from "../../components/toast/ToastPortal";
+import { useDeleteProfile } from "../../hooks/useDeleteProfile";
 
 const ProfilePage = () => {
   const queryClient = useQueryClient();
@@ -93,13 +93,20 @@ const ProfilePage = () => {
     }
   };
 
+  const {
+    mutate: deleteProfile, 
+    isSuccess: deleteProfileIsSuccess, 
+  } = useDeleteProfile({
+    onSuccess: () => {
+      localStorage.removeItem("token");
+      navigate("/sign-in");
+    }
+  });
+
   const handleSubmit = async () => {
     if (profile?.id === user?.id) {
       // Eliminar perfil
-      deleteProfile().then(() => {
-        localStorage.removeItem("token");
-        navigate("/sign-in");
-      });
+      deleteProfile()
     } else {
       handleUnfollow();
       setShowModal(false);

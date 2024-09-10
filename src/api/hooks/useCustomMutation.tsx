@@ -44,7 +44,6 @@ function useCustomMutation<
         },
 
         onMutate: (value) => {
-            console.log('MUTATING WITH VALUE', value)
             onMutate?.(value);
         },
 

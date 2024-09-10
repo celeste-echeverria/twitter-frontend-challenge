@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import { Author, UserView } from "../../interfaces/user.interface";
-import { searchUsers } from "../../api/services/userService";
+import { UserView } from "../../interfaces/user.interface";
 import { useTranslation } from "react-i18next";
 import { StyledSearchBarContainer } from "./SearchBarContainer";
 import { StyledSearchBarInput } from "./SearchBarInput";
